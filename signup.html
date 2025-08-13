@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>إنشاء حساب</title>
+  <style>
+    :root {
+      --primary: #6200ea;
+      --primary-dark: #4b00b5;
+      --background-dark: rgba(18, 18, 18, 0.9);
+      --background-light: rgba(255, 255, 255, 0.9);
+      --text: #e0e0e0;
+      --text-light: #333333;
+      --glow-color: rgba(98, 0, 234, 0.6);
+      --glow-color-light: rgba(98, 0, 234, 0.4);
+      --glass-bg-dark: rgba(30, 30, 30, 0.7);
+      --glass-bg-light: rgba(245, 245, 245, 0.85);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 16px;
+      background: linear-gradient(135deg, #1e1e1e, #2c3e50);
+      overflow-x: hidden;
+      position: relative;
+      color: var(--text);
+    }
+    body.light-mode {
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: var(--text-light);
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(98, 0, 234, 0.1) 10%, transparent 10%);
+      background-size: 20px 20px;
+      animation: float 10s infinite linear;
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-100px); }
+    }
+
+    .form-container {
+      max-width: 400px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      box-shadow: var(--glass-shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: fadeIn 0.5s ease;
+    }
+    .light-mode .form-container {
+      background: var(--glass-bg-light);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: var(--text-light);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.2rem);
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      text-align: center;
+      text-shadow: 0 0 5px var(--glow-color);
+    }
+    .light-mode h1 {
+      text-shadow: 0 0 5px var(--glow-color-light);
+    }
+
+    input, button {
+      width: 100%;
+      max-width: 350px;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 12px;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      transition: all 0.3s ease;
+      direction: rtl;
+    }
+
+    input {
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text);
+    }
+    .light-mode input {
+      background: var(--glass-bg-light);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: var(--text-light);
+    }
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 8px var(--glow-color);
+      outline: none;
+    }
+    .light-mode input:focus {
+      box-shadow: 0 0 8px var(--glow-color-light);
+    }
+    input::placeholder {
+      color: #94a3b8;
+    }
+    .light-mode input::placeholder {
+      color: #666;
+    }
+
+    button {
+      background: var(--primary);
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: var(--glass-shadow);
+    }
+    button:hover {
+      background: var(--primary-dark);
+      transform: scale(1.02);
+      box-shadow: 0 0 15px var(--glow-color);
+    }
+    .light-mode button:hover {
+      box-shadow: 0 0 15px var(--glow-color-light);
+    }
+
+    #profilePreview {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: 1rem 0;
+      display: none;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+      box-shadow: 0 0 10px var(--glow-color);
+    }
+    .light-mode #profilePreview {
+      box-shadow: 0 0 10px var(--glow-color-light);
+    }
+
+    .back-button {
+      margin-top: 1rem;
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      transition: all 0.3s ease;
+    }
+    .light-mode .back-button {
+      background: var(--glass-bg-light);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: var(--text-light);
+    }
+    .back-button:hover {
+      background: var(--primary-dark);
+      color: white;
+      transform: scale(1.02);
+      box-shadow: 0 0 15px var(--glow-color);
+    }
+    .light-mode .back-button:hover {
+      box-shadow: 0 0 15px var(--glow-color-light);
+    }
+
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 1.5rem;
+        margin: 1rem;
+      }
+      h1 {
+        font-size: clamp(1.5rem, 4vw, 1.8rem);
+      }
+      input, button {
+        max-width: 100%;
+        padding: 0.8rem;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+      }
+      #profilePreview {
+        width: 80px;
+        height: 80px;
+      }
+      .back-button {
+        padding: 0.7rem 1.2rem;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-container {
+        padding: 1rem;
+        margin: 0.5rem;
+      }
+      h1 {
+        font-size: clamp(1.3rem, 4vw, 1.6rem);
+        margin-bottom: 1rem;
+      }
+      input, button {
+        padding: 0.7rem;
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+      }
+      #profilePreview {
+        width: 70px;
+        height: 70px;
+      }
+      .back-button {
+        padding: 0.6rem 1rem;
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+      }
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <div class="form-container">
+    <h1>إنشاء حساب</h1>
+    <input type="email" id="email" placeholder="البريد الإلكتروني" required aria-label="البريد الإلكتروني">
+    <input type="password" id="password" placeholder="كلمة المرور" required aria-label="كلمة المرور">
+    <input type="text" id="preferredName" placeholder="الاسم المفضل" required aria-label="الاسم المفضل">
+    <input type="file" id="profilePicture" accept="image/*" aria-label="اختيار صورة الملف الشخصي">
+    <img id="profilePreview" src="" alt="معاينة الصورة الشخصية">
+    <button onclick="signup()">إنشاء الحساب</button>
+    <a href="index.html" class="back-button">العودة إلى الصفحة الرئيسية</a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script>
+    // Initialize Supabase client
+    const supabaseUrl = 'https://brczsguiunkfzyddczpi.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyY3pzZ3VpdW5rZnp5ZGRjenBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwOTM4NTcsImV4cCI6MjA3MDY2OTg1N30.7JsPLR2IG5DuuOD3AnfqnmwvyZiTrJZrIERKE_uhN-Y';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.body.classList.add(savedTheme === 'light' ? 'light-mode' : 'dark-mode');
+
+    // Preview profile picture
+    document.getElementById('profilePicture').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('profilePreview').src = e.target.result;
+          document.getElementById('profilePreview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    async function signup() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const preferredName = document.getElementById('preferredName').value.trim();
+      const profilePicture = document.getElementById('profilePicture').files[0];
+
+      if (!email || !password || !preferredName) {
+        alert('يرجى ملء جميع الحقول المطلوبة');
+        return;
+      }
+
+      try {
+        // Check if email is already registered
+        const { data: existingUsers, error: checkError } = await supabase
+          .from('users')
+          .select('email')
+          .eq('email', email)
+          .single();
+
+        if (checkError && checkError.code !== 'PGRST116') { // PGRST116: No rows found
+          console.error('Error checking email:', checkError);
+          if (checkError.message.includes('Could not find the table')) {
+            alert('خطأ: جدول المستخدمين غير موجود في قاعدة البيانات. يرجى التحقق من إعدادات Supabase.');
+          } else {
+            alert('حدث خطأ أثناء التحقق من البريد الإلكتروني: ' + checkError.message);
+          }
+          return;
+        }
+
+        if (existingUsers) {
+          alert('البريد الإلكتروني مسجل مسبقًا، يرجى تسجيل الدخول أو استخدام بريد آخر');
+          return;
+        }
+
+        // Hash password
+        const hashedPassword = CryptoJS.SHA256(password).toString();
+
+        // Convert image to Base64 if selected
+        if (profilePicture) {
+          const reader = new FileReader();
+          reader.onload = async function(e) {
+            const profilePictureData = e.target.result;
+
+            // Store user data in Supabase
+            const { data, error } = await supabase
+              .from('users')
+              .insert([
+                {
+                  email: email,
+                  password: hashedPassword,
+                  preferred_name: preferredName,
+                  profile_picture: profilePictureData
+                }
+              ]);
+
+            if (error) {
+              console.error('Error saving user:', error);
+              if (error.message.includes('Could not find the table')) {
+                alert('خطأ: جدول المستخدمين غير موجود في قاعدة البيانات. يرجى التحقق من إعدادات Supabase.');
+              } else {
+                alert('حدث خطأ أثناء إنشاء الحساب: ' + error.message);
+              }
+              return;
+            }
+
+            // Auto-login
+            localStorage.setItem('preferredName', preferredName);
+            localStorage.setItem('profilePicture', profilePictureData);
+
+            alert('تم إنشاء الحساب بنجاح!');
+            window.location.href = 'index.html';
+          };
+          reader.readAsDataURL(profilePicture);
+        } else {
+          // If no profile picture is selected
+          const { data, error } = await supabase
+            .from('users')
+            .insert([
+              {
+                email: email,
+                password: hashedPassword,
+                preferred_name: preferredName,
+                profile_picture: null
+              }
+            ]);
+
+          if (error) {
+            console.error('Error saving user:', error);
+            if (error.message.includes('Could not find the table')) {
+              alert('خطأ: جدول المستخدمين غير موجود في قاعدة البيانات. يرجى التحقق من إعدادات Supabase.');
+            } else {
+              alert('حدث خطأ أثناء إنشاء الحساب: ' + error.message);
+            }
+            return;
+          }
+
+          // Auto-login
+          localStorage.setItem('preferredName', preferredName);
+          localStorage.removeItem('profilePicture');
+
+          alert('تم إنشاء الحساب بنجاح!');
+          window.location.href = 'index.html';
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+        alert('حدث خطأ غير متوقع أثناء إنشاء الحساب: ' + err.message);
+      }
+    }
+  </script>
+</body>
+</html>

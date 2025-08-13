@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>ABDOX-AI</title>
+  <style>
+    :root {
+      --primary: #6200ea;
+      --primary-dark: #4b00b5;
+      --background-dark: rgba(18, 18, 18, 0.9);
+      --background-light: rgba(255, 255, 255, 0.9);
+      --text: #e0e0e0;
+      --text-light: #333333;
+      --glow-color: rgba(98, 0, 234, 0.6);
+      --glow-color-light: rgba(98, 0, 234, 0.4);
+      --source-underline: rgba(0, 128, 255, 0.4);
+      --title-color: #00d4ff;
+      --title-color-light: #333333; /* New color for h2 in light mode */
+      --glass-bg-dark: rgba(30, 30, 30, 0.7);
+      --glass-bg-light: rgba(245, 245, 245, 0.85);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-size: 16px;
+      background: linear-gradient(135deg, #1e1e1e, #2c3e50);
+      overflow-x: hidden;
+      position: relative;
+    }
+    body.dark-mode {
+      background: linear-gradient(135deg, #121212, #2c3e50);
+      color: var(--text);
+    }
+    body.light-mode {
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: var(--text-light);
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(98, 0, 234, 0.1) 10%, transparent 10%);
+      background-size: 20px 20px;
+      animation: float 10s infinite linear;
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-100px); }
+    }
+
+    .auth-buttons {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+    }
+    .auth-buttons.hidden {
+      display: none;
+    }
+    .auth-buttons .button {
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-decoration: none;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--glass-shadow);
+    }
+    .light-mode .auth-buttons .button {
+      background: var(--glass-bg-light);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: var(--text-light);
+    }
+    .auth-buttons .button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px var(--glow-color);
+    }
+    .light-mode .auth-buttons .button:hover {
+      box-shadow: 0 0 15px var(--glow-color-light);
+    }
+
+    .profile {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 10;
+    }
+    #profilePic {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid var(--primary);
+      transition: transform 0.3s ease;
+      display: none;
+    }
+    #profilePic:hover {
+      transform: rotate(360deg);
+    }
+    #themeToggle {
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      color: var(--text);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--glass-shadow);
+    }
+    .light-mode #themeToggle {
+      background: var(--glass-bg-light);
+      color: var(--text-light);
+    }
+    #themeToggle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px var(--glow-color);
+    }
+    .light-mode #themeToggle:hover {
+      box-shadow: 0 0 15px var(--glow-color-light);
+    }
+    .dropdown {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: var(--glass-shadow);
+      display: none;
+      flex-direction: column;
+      width: 160px;
+      z-index: 1000;
+      animation: slideIn 0.3s ease-out;
+    }
+    .light-mode .dropdown {
+      background: var(--glass-bg-light);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .dropdown.active {
+      display: flex;
+    }
+    .dropdown button {
+      background: none;
+      border: none;
+      padding: 12px;
+      color: var(--text);
+      text-align: right;
+      cursor: pointer;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .light-mode .dropdown button {
+      color: var(--text-light);
+    }
+    .dropdown button:hover {
+      background: var(--primary-dark);
+      color: white;
+      transform: translateX(-5px);
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .title {
+      text-align: center;
+      font-size: clamp(2.5rem, 6vw, 3rem);
+      font-weight: 700;
+      color: var(--title-color);
+      margin: 2.5rem 0 1.5rem;
+      text-shadow: 0 0 10px var(--glow-color);
+      animation: pulse 2s infinite ease-in-out;
+    }
+    .light-mode .title {
+      text-shadow: 0 0 10px var(--glow-color-light);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .chat-area {
+      flex: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      box-shadow: var(--glass-shadow);
+      position: relative;
+      z-index: 1;
+      display: none;
+    }
+    .chat-area.active {
+      display: block;
+    }
+    .light-mode .chat-area {
+      background: var(--glass-bg-light);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .bubble {
+      max-width: 75%;
+      margin: 0.8rem;
+      padding: 1rem;
+      border-radius: 16px;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      line-height: 1.6;
+      word-wrap: break-word;
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--glass-shadow);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    .bubble.user {
+      background: var(--primary);
+      color: white;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+    .bubble.ai {
+      background: var(--glass-bg-dark);
+      color: var(--text);
+      margin-right: auto;
+      border-bottom-left-radius: 4px;
+    }
+    .light-mode .bubble.ai {
+      background: var(--glass-bg-light);
+      color: var(--text-light);
+    }
+    .bubble.ai h2 {
+      font-size: clamp(1.2rem, 2.5vw, 1.3rem);
+      margin: 0.6rem 0;
+      color: var(--title-color);
+      text-shadow: 0 0 5px var(--glow-color);
+    }
+    .light-mode .bubble.ai h2 {
+      color: var(--title-color-light); /* Updated for less eye strain */
+      text-shadow: none; /* Remove glow in light mode */
+    }
+    .bubble.ai ul, .bubble.ai ol {
+      margin: 0.6rem 1.2rem;
+    }
+    .bubble.ai li {
+      margin-bottom: 0.4rem;
+    }
+    .bubble.ai a {
+      color: var(--primary);
+      text-decoration: underline;
+      transition: color 0.2s ease;
+    }
+    .bubble.ai a:hover {
+      color: var(--primary-dark);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .source-list {
+      margin-top: 0.8rem;
+      padding: 1rem;
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(90, 112, 160, 0.3);
+      border-radius: 12px;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      box-shadow: var(--glass-shadow);
+    }
+    .light-mode .source-list {
+      background: var(--glass-bg-light);
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+    .source-list strong {
+      display: block;
+      margin-bottom: 0.6rem;
+      font-weight: bold;
+      font-size: clamp(1.1rem, 2vw, 1.2rem);
+      color: var(--primary);
+    }
+    .source-list ol {
+      margin: 0;
+      padding-right: 2.2rem;
+      list-style-position: inside;
+    }
+    .source-list li {
+      margin: 0.6rem 0;
+      line-height: 1.7;
+    }
+    .source-list a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      padding: 0.3rem 0;
+      display: block;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      border-bottom: 2px solid var(--source-underline);
+    }
+    .source-list a:hover {
+      color: var(--primary-dark);
+      background: rgba(98, 0, 234, 0.15);
+      transform: translateX(5px);
+    }
+
+    .input-section {
+      max-width: 800px;
+      margin: 0 auto;
+      z-index: 10;
+      transition: all 0.5s ease;
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+      border: none;
+    }
+    .input-section.initial {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      max-width: 800px;
+    }
+    .input-section.sticky {
+      position: sticky;
+      bottom: 0;
+    }
+
+    .input-wrapper {
+      position: relative;
+      background: transparent;
+      box-shadow: none;
+      border: none;
+      padding: 0;
+    }
+
+    .input-field {
+      width: 100%;
+      border: 2px solid #334155;
+      background: #1e293b;
+      color: var(--text);
+      font-size: clamp(1.2rem, 2.5vw, 1.3rem);
+      outline: none;
+      padding: 1.4rem 8.5rem 1.4rem 1.4rem;
+      min-height: 60px;
+      border-radius: 16px;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+      direction: rtl;
+    }
+    .light-mode .input-field {
+      background: rgba(240, 240, 240, 0.9);
+      border-color: #ccc;
+      color: var(--text-light);
+    }
+    .input-field.ltr {
+      direction: ltr;
+    }
+    .input-field:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 8px var(--glow-color);
+    }
+    .light-mode .input-field:focus {
+      box-shadow: 0 0 8px var(--glow-color-light);
+    }
+    .input-field::placeholder {
+      color: #94a3b8;
+    }
+    .light-mode .input-field::placeholder {
+      color: #666;
+    }
+
+    .mic-button, .send-button, .more-button, .scroll-to-bottom-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 11;
+    }
+
+    .scroll-to-bottom-button {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      border-radius: 50%;
+      padding: 0.8rem;
+      display: none;
+      box-shadow: var(--glass-shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .light-mode .scroll-to-bottom-button {
+      background: var(--glass-bg-light);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .scroll-to-bottom-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px var(--glow-color);
+    }
+    .light-mode .scroll-to-bottom-button:hover {
+      box-shadow: 0 0 15px var(--glow-color-light);
+    }
+    .scroll-to-bottom-button.active {
+      display: block;
+    }
+    .scroll-to-bottom-icon {
+      width: 26px;
+      height: 26px;
+      fill: var(--primary);
+    }
+    .scroll-to-bottom-button:hover .scroll-to-bottom-icon {
+      fill: var(--primary-dark);
+    }
+
+    .more-options-container {
+      position: absolute;
+      right: 3rem;
+      top: -11rem;
+      display: none;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      box-shadow: var(--glass-shadow);
+      flex-direction: column;
+      width: 180px;
+      padding: 0.5rem;
+      z-index: 12;
+    }
+    .light-mode .more-options-container {
+      background: var(--glass-bg-light);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .more-options-container.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .image-button, .terbocode-button, .terboedu-button {
+      background: var(--glass-bg-dark);
+      backdrop-filter: blur(10px);
+      border: none;
+      cursor: pointer;
+      padding: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      border-radius: 8px;
+      margin: 0.3rem 0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.2s ease;
+      color: var(--text);
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      width: 100%;
+      text-align: right;
+    }
+    .light-mode .image-button, .light-mode .terbocode-button, .light-mode .terboedu-button {
+      background: var(--glass-bg-light);
+      color: var(--text-light);
+    }
+    .image-button:hover, .terbocode-button:hover, .terboedu-button:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 10px var(--glow-color);
+      background: var(--primary-dark);
+      color: white;
+    }
+    .light-mode .image-button:hover, .light-mode .terbocode-button:hover, .light-mode .terboedu-button:hover {
+      box-shadow: 0 0 10px var(--glow-color-light);
+    }
+    .image-button svg, .terbocode-button svg, .terboedu-button svg {
+      margin-left: 0.5rem;
+      width: 24px;
+      height: 24px;
+      fill: var(--primary);
+      transition: fill 0.2s ease;
+    }
+    .image-button:hover svg, .terbocode-button:hover svg, .terboedu-button:hover svg {
+      fill: white;
+    }
+    .mic-button {
+      right: 5.5rem;
+    }
+    .more-button {
+      right: 3rem;
+    }
+    .send-button {
+      right: 0.5rem;
+    }
+    .mic-button:hover .mic-icon, .send-button:hover .send-icon, .more-button:hover .more-icon {
+      fill: var(--primary-dark);
+    }
+    .mic-button.active .mic-icon {
+      fill: red;
+    }
+    .mic-icon, .send-icon, .more-icon {
+      width: 26px;
+      height: 26px;
+      fill: var(--primary);
+    }
+    .image-icon, .terbocode-icon, .terboedu-icon {
+      width: 24px;
+      height: 24px;
+      fill: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .chat-area {
+        padding: 0.5rem;
+      }
+      .bubble {
+        max-width: 85%;
+      }
+      .auth-buttons {
+        top: 10px;
+        left: 0;
+        padding-left: 10px;
+      }
+      .profile {
+        top: 10px;
+        right: 10px;
+      }
+      .dropdown {
+        width: 120px;
+        top: 40px;
+      }
+      .title {
+        font-size: clamp(1.8rem, 5vw, 2rem);
+        margin: 1.5rem 0 0.5rem;
+      }
+      .input-field {
+        padding: 1.5rem 8rem 1.5rem 1.5rem;
+        min-height: 68px;
+        font-size: clamp(1.25rem, 2.5vw, 1.35rem);
+        border-radius: 14px;
+      }
+      .mic-button {
+        right: 5rem;
+      }
+      .more-button {
+        right: 2.7rem;
+      }
+      .more-options-container {
+        right: 2.7rem;
+        top: -10.5rem;
+        width: 160px;
+      }
+      .send-button {
+        right: 0.4rem;
+      }
+      .mic-icon, .send-icon, .more-icon {
+        width: 24px;
+        height: 24px;
+      }
+      .image-icon, .terbocode-icon, .terboedu-icon {
+        width: 22px;
+        height: 22px;
+      }
+      .image-button, .terbocode-button, .terboedu-button {
+        padding: 0.7rem;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+      }
+      .source-list {
+        padding: 0.6rem;
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+      }
+      .source-list strong {
+        font-size: clamp(0.95rem, 2vw, 1.05rem);
+      }
+      .source-list ol {
+        padding-right: 1.5rem;
+      }
+      .source-list li {
+        margin: 0.4rem 0;
+        line-height: 1.5;
+      }
+      .source-list a {
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+      }
+      .scroll-to-bottom-button {
+        bottom: 70px;
+        right: 15px;
+        padding: 0.7rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        font-size: 14px;
+      }
+      .bubble {
+        padding: 0.6rem;
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+      }
+      .input-field {
+        padding: 1.5rem 8rem 1.5rem 1.5rem;
+        min-height: 72px;
+        font-size: clamp(1.3rem, 2.5vw, 1.4rem);
+        border-radius: 14px;
+      }
+      .mic-button {
+        right: 5rem;
+      }
+      .more-button {
+        right: 2.7rem;
+      }
+      .more-options-container {
+        right: 2.7rem;
+        top: -10rem;
+        width: 140px;
+      }
+      .send-button {
+        right: 0.4rem;
+      }
+      .mic-icon, .send-icon, .more-icon {
+        width: 22px;
+        height: 22px;
+      }
+      .image-icon, .terbocode-icon, .terboedu-icon {
+        width: 20px;
+        height: 20px;
+      }
+      .image-button, .terbocode-button, .terboedu-button {
+        padding: 0.6rem;
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+      }
+      .source-list {
+        padding: 0.5rem;
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+      }
+      .source-list strong {
+        font-size: clamp(0.9rem, 2vw, 1rem);
+      }
+      .source-list ol {
+        padding-right: 1.2rem;
+      }
+      .source-list li {
+        margin: 0.3rem 0;
+        line-height: 1.4;
+      }
+      .source-list a {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+      }
+      .scroll-to-bottom-button {
+        bottom: 60px;
+        right: 10px;
+        padding: 0.6rem;
+      }
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <div class="auth-buttons">
+    <a href="login.html" class="button">تسجيل الدخول</a>
+    <a href="signup.html" class="button">إنشاء حساب</a>
+  </div>
+  <div class="profile">
+    <img id="profilePic" src="" alt="الملف الشخصي">
+    <button id="themeToggle">تبديل الوضع</button>
+    <div class="dropdown" id="dropdown">
+      <button id="themeToggleBtn">تبديل الوضع</button>
+      <button id="changeNameBtn">تغيير الاسم</button>
+      <button id="logoutBtn">تسجيل الخروج</button>
+    </div>
+  </div>
+  <div class="title">Terbo.v1</div>
+  <div class="chat-area" id="chat"></div>
+  <button id="scrollToBottom" class="scroll-to-bottom-button" title="النزول للأسفل">
+    <svg class="scroll-to-bottom-icon" viewBox="0 0 24 24"><path d="M12 21l-7-7 1.4-1.4L12 18.2l5.6-5.6L19 14l-7 7zM5 9V7h14v2H5z"/></svg>
+  </button>
+  <div class="input-section initial">
+    <div class="input-wrapper">
+      <input id="input" class="input-field" placeholder="اكتب رسالة، ابحث، أو اكتب أنشئ صورة" />
+      <button id="mic" class="mic-button" title="التحدث صوتياً">
+        <svg class="mic-icon" viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 10-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 0014 0h-2zM11 19v3h2v-3h-2z"/></svg>
+      </button>
+      <button id="more" class="more-button" title="المزيد">
+        <svg class="more-icon" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      </button>
+      <div class="more-options-container" id="moreOptionsContainer">
+        <button id="image" class="image-button" title="إنشاء صورة">
+          <svg class="image-icon" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-9 14l-5-5 2-2 3 3 8-8 2 2-10 10z"/></svg>
+          إنشاء صورة
+        </button>
+        <button id="terbocode" class="terbocode-button" title="Terbo.code">
+          <svg class="terbocode-icon" viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+          Terbo.code
+        </button>
+        <button id="terboedu" class="terboedu-button" title="Terbo.edu">
+          <svg class="terboedu-icon" viewBox="0 0 24 24"><path d="M12 2L1 7v10h2v-9l9 4 9-4v9h2V7L12 2zm0 5l6 2.5-6 2.5-6-2.5 6-2.5z"/></svg>
+          Terbo.edu
+        </button>
+      </div>
+      <button id="send" class="send-button" title="إرسال كتابة">
+        <svg class="send-icon" viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <script src="https://code.responsivevoice.org/responsivevoice.js?key=U8eh5p8Q"></script>
+  <script type="module">
+    import config from './config.js';
+
+    const Api_Url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBJvhPW1ZSldEsWcGoNwgN4LuarfBPtnXY";
+    const CSE_API_KEY = "AIzaSyCKHQNAE79EMYhYS0JU6UkF3z5UwChGcNg";
+    const CSE_CX = "b49c9b3548f2b47d7";
+    const chatArea = document.getElementById("chat");
+    const inputSection = document.querySelector('.input-section');
+    let preferredName = localStorage.getItem('preferredName') || 'المستخدم';
+    let aiResponseCount = 0;
+    let history = [];
+    let shouldSpeak = false;
+    let isSpeaking = false;
+    let hasSentFirstMessage = false;
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.body.classList.add(savedTheme === 'light' ? 'light-mode' : 'dark-mode');
+
+    // Handle auth buttons and welcome message
+    if (localStorage.getItem('preferredName')) {
+      document.querySelector('.auth-buttons').classList.add('hidden');
+      chatArea.classList.add('active');
+      appendBubble(`أهلاً بعودتك يا ${preferredName}`, "ai");
+    }
+
+    // Load profile picture
+    const profilePic = localStorage.getItem('profilePicture');
+    const profileImg = document.getElementById('profilePic');
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const dropdown = document.getElementById('dropdown');
+    if (profilePic && profilePic !== 'https://via.placeholder.com/50') {
+      profileImg.src = profilePic;
+      profileImg.style.display = 'block';
+      themeToggleBtn.style.display = 'none';
+    } else {
+      themeToggleBtn.style.display = 'block';
+    }
+
+    // Dropdown toggle
+    function toggleDropdown() {
+      try {
+        dropdown.classList.toggle('active');
+        console.log('Dropdown toggled:', dropdown.classList.contains('active') ? 'visible' : 'hidden');
+      } catch (e) {
+        console.error('Error in toggleDropdown:', e);
+      }
+    }
+    profileImg.addEventListener('click', toggleDropdown);
+    themeToggleBtn.addEventListener('click', toggleDropdown);
+
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target) && !profileImg.contains(e.target) && !themeToggleBtn.contains(e.target)) {
+        dropdown.classList.remove('active');
+      }
+    });
+
+    // Theme toggle
+    function toggleTheme() {
+      try {
+        if (document.body.classList.contains('light-mode')) {
+          document.body.classList.remove('light-mode');
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.body.classList.remove('dark-mode');
+          document.body.classList.add('light-mode');
+          localStorage.setItem('theme', 'light');
+        }
+        console.log('Theme toggled:', localStorage.getItem('theme'));
+        dropdown.classList.remove('active');
+      } catch (e) {
+        console.error('Error in toggleTheme:', e);
+      }
+    }
+    document.getElementById('themeToggleBtn').addEventListener('click', toggleTheme);
+
+    // Change preferred name
+    function changePreferredName() {
+      try {
+        const newName = prompt('أدخل الاسم الجديد الذي تريد أن أناديك به:');
+        if (newName && newName.trim()) {
+          preferredName = newName.trim();
+          localStorage.setItem('preferredName', preferredName);
+          const email = Object.keys(localStorage).find(key => key.startsWith('user_'));
+          if (email) {
+            const userData = JSON.parse(localStorage.getItem(email));
+            userData.preferredName = preferredName;
+            localStorage.setItem(email, JSON.stringify(userData));
+          }
+          chatArea.classList.add('active');
+          appendBubble(`أهلاً يا ${preferredName}، سأناديك بهذا الاسم من الآن فصاعدًا`, "ai");
+          console.log('Name changed to:', preferredName);
+        } else if (newName !== null) {
+          alert('يرجى إدخال اسم صالح');
+        }
+        dropdown.classList.remove('active');
+      } catch (e) {
+        console.error('Error in changePreferredName:', e);
+      }
+    }
+    document.getElementById('changeNameBtn').addEventListener('click', changePreferredName);
+
+    // Logout
+    function logout() {
+      try {
+        localStorage.removeItem('preferredName');
+        localStorage.removeItem('profilePicture');
+        document.querySelector('.auth-buttons').classList.remove('hidden');
+        profileImg.style.display = 'none';
+        themeToggleBtn.style.display = 'block';
+        dropdown.classList.remove('active');
+        chatArea.classList.remove('active');
+        console.log('User logged out');
+        window.location.reload();
+      } catch (e) {
+        console.error('Error in logout:', e);
+      }
+    }
+    document.getElementById('logoutBtn').addEventListener('click', logout);
+
+    // Chat functions
+    function appendBubble(text, cls) {
+      try {
+        const div = document.createElement("div");
+        div.className = `bubble ${cls}`;
+        div.innerHTML = text;
+        chatArea.appendChild(div);
+        chatArea.classList.add('active');
+        chatArea.scrollTo({ top: chatArea.scrollHeight, behavior: 'smooth' });
+      } catch (e) {
+        console.error('Error in appendBubble:', e);
+      }
+    }
+
+    // Scroll-to-bottom button visibility
+    const scrollToBottomBtn = document.getElementById('scrollToBottom');
+    function updateScrollButtonVisibility() {
+      if (!chatArea.classList.contains('active')) return;
+      const isNearBottom = chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight < 100;
+      scrollToBottomBtn.classList.toggle('active', !isNearBottom);
+    }
+    chatArea.addEventListener('scroll', updateScrollButtonVisibility);
+    scrollToBottomBtn.addEventListener('click', () => {
+      chatArea.scrollTo({ top: chatArea.scrollHeight, behavior: 'smooth' });
+    });
+
+    function speakText(text) {
+      try {
+        if (!shouldSpeak) return;
+        isSpeaking = true;
+        responsiveVoice.cancel();
+        responsiveVoice.speak(text, "Arabic Male", {
+          rate: 1, pitch: 1, volume: 1,
+          onend: () => { isSpeaking = false; }
+        });
+      } catch (e) {
+        console.error('Error in speakText:', e);
+      }
+    }
+
+    function stopSpeech() {
+      try {
+        responsiveVoice.cancel();
+        isSpeaking = false;
+      } catch (e) {
+        console.error('Error in stopSpeech:', e);
+      }
+    }
+
+    function getContext() {
+      try {
+        const systemPrompt = config.systemPrompt
+          .replace('{aiName}', config.aiName)
+          .replace('{developer}', config.developer);
+        return `${systemPrompt}\n\n` + history.map(h => `${h.role === "user" ? preferredName : "AI"}: ${h.text}`).join("\n");
+      } catch (e) {
+        console.error('Error in getContext:', e);
+        return '';
+      }
+    }
+
+    function normalizeEnglishInArabic(text) {
+      try {
+        let normalized = text.replace(/<span[^>]*>.*?(span>|<\/span>)/g, match => {
+          const word = match.replace(/<[^>]+>/g, '');
+          return word.replace(/span$/i, '');
+        });
+        normalized = normalized.replace(/\s+([a-zA-Z0-9_-]+)\s+/g, ' $1 ');
+        const properNouns = [
+          'Google', 'Facebook', 'Twitter', 'YouTube', 'Wi-Fi', 'AI', 'API',
+          'Giza', 'Saqqara', 'Sphinx', 'SpaceX', 'Tesla', 'Forbes', 'Bloomberg'
+        ];
+        normalized = normalized.replace(/\b([a-zA-Z0-9_-]+)\b/g, (match) => {
+          const properMatch = properNouns.find(pn => pn.toLowerCase() === match.toLowerCase());
+          if (properMatch) return properMatch;
+          return match.toLowerCase();
+        });
+        normalized = normalized.replace(/"([a-zA-Z0-9_-]+)"/g, '$1');
+        normalized = normalized.replace(/`([a-zA-Z0-9_-]+)`/g, '$1');
+        normalized = normalized.replace(/```[\s\S]*?```/g, '');
+        normalized = normalized.replace(/\b([a-zA-Z0-9_-]+)\b/g, (match) => {
+          if (properNouns.includes(match) || /^[a-zA-Z0-9_-]+$/.test(match)) {
+            return `<span dir="ltr">${match}</span>`;
+          }
+          return match;
+        });
+        console.log('Normalized text:', normalized);
+        return normalized;
+      } catch (e) {
+        console.error('Error in normalizeEnglishInArabic:', e);
+        return text;
+      }
+    }
+
+    function formatHeadings(text) {
+      try {
+        let formatted = text.replace(/\*\*(.+?)\*\*/g, '<h2>$1</h2>');
+        console.log('Formatted headings:', formatted);
+        return formatted;
+      } catch (e) {
+        console.error('Error in formatHeadings:', e);
+        return text;
+      }
+    }
+
+    function addUserNameToResponse(response) {
+      try {
+        aiResponseCount++;
+        return response;
+      } catch (e) {
+        console.error('Error in addUserNameToResponse:', e);
+        return response;
+      }
+    }
+
+    async function generateChatResponse(message) {
+      try {
+        history.push({ role: "user", text: message });
+        appendBubble("جاري الكتابة...", "ai");
+        const context = getContext();
+        const fullPrompt = context + "\nAI: ";
+        const res = await fetch(Api_Url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: [{ parts: [{ text: fullPrompt }] }] })
+        });
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
+        let resp = data.candidates[0].content.parts[0].text.trim();
+        resp = normalizeEnglishInArabic(resp);
+        resp = formatHeadings(resp);
+        resp = addUserNameToResponse(resp);
+        document.querySelector(".bubble.ai:last-child")?.remove();
+        appendBubble(resp, "ai");
+        history.push({ role: "ai", text: resp });
+        speakText(resp.replace(/<[^>]+>/g, ''));
+        console.log('AI response:', resp);
+      } catch (e) {
+        document.querySelector(".bubble.ai:last-child")?.remove();
+        appendBubble("حدث خطأ في جلب الرد. تحقق من اتصال الإنترنت أو مفتاح API.", "ai");
+        history.push({ role: "ai", text: "حدث خطأ في جلب الرد." });
+        console.error('Error in generateChatResponse:', e);
+      }
+    }
+
+    async function searchWeb(query) {
+      try {
+        const url = `https://www.googleapis.com/customsearch/v1?key=${CSE_API_KEY}&cx=${CSE_CX}&q=${encodeURIComponent(query)}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
+        return data.items || [];
+      } catch (e) {
+        console.error('Error in searchWeb:', e);
+        return [];
+      }
+    }
+
+    async function fetchPageText(url) {
+      try {
+        const proxy = "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
+        const res = await fetch(proxy);
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        return Array.from(doc.querySelectorAll("p"))
+          .slice(0, 5).map(p => p.textContent.trim())
+          .filter(t => t.length > 30).join("\n\n");
+      } catch (e) {
+        console.error('Error in fetchPageText:', e);
+        return "";
+      }
+    }
+
+    async function summarizeSearch(query) {
+      try {
+        history.push({ role: "user", text: "ابحث عن " + query });
+        appendBubble("جاري البحث والتلخيص...", "ai");
+        const items = await searchWeb(query);
+        let combined = "";
+        for (let i = 0; i < Math.min(items.length, 3); i++) {
+          combined += await fetchPageText(items[i].link) + "\n\n";
+        }
+        const prompt = `لقد بحثت عن: "${query}"\n\n${combined}`;
+        const context = getContext() + "\nAI: ";
+        const res = await fetch(Api_Url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: [{ parts: [{ text: context + prompt }] }] })
+        });
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
+        let summary = data.candidates[0].content.parts[0].text.trim();
+        summary = normalizeEnglishInArabic(summary);
+        summary = formatHeadings(summary);
+        summary = addUserNameToResponse(summary);
+        document.querySelector(".bubble.ai:last-child")?.remove();
+        appendBubble(`<strong>ملخص الفهم:</strong><br>${summary}`, "ai");
+        history.push({ role: "ai", text: summary });
+        speakText(summary.replace(/<[^>]+>/g, ''));
+        const sources = items.slice(0, 5)
+          .map((it, index) => `<li><a href="${it.link}" target="_blank">${index + 1}. ${it.title}</a></li>`)
+          .join("");
+        appendBubble(`<div class="source-list"><strong>المصادر:</strong><ol>${sources}</ol></div>`, "ai");
+        console.log('Search summary:', summary);
+      } catch (e) {
+        document.querySelector(".bubble.ai:last-child")?.remove();
+        appendBubble("حدث خطأ في التلخيص. تحقق من اتصال الإنترنت أو مفتاح API.", "ai");
+        history.push({ role: "ai", text: "حدث خطأ في التلخيص." });
+        console.error('Error in summarizeSearch:', e);
+      }
+    }
+
+    function navigateToImageCreation(prompt = '') {
+      inputSection.classList.remove('initial');
+      inputSection.classList.add('sticky');
+      chatArea.classList.add('active');
+      const url = prompt ? `create-image.html?prompt=${encodeURIComponent(prompt)}` : 'create-image.html';
+      window.location.href = url;
+    }
+
+    function navigateToTerboCode() {
+      inputSection.classList.remove('initial');
+      inputSection.classList.add('sticky');
+      chatArea.classList.add('active');
+      window.location.href = 'terbocode.html';
+    }
+
+    function navigateToTerboEdu() {
+      inputSection.classList.remove('initial');
+      inputSection.classList.add('sticky');
+      chatArea.classList.add('active');
+      window.location.href = 'Terboedu.html';
+    }
+
+    async function handleTextInput() {
+      try {
+        if (isSpeaking) stopSpeech();
+        shouldSpeak = false;
+        const input = document.getElementById("input");
+        if (!input) {
+          console.error('Input field not found');
+          return;
+        }
+        const text = input.value.trim();
+        if (!text) {
+          console.log('No input provided');
+          return;
+        }
+        console.log('User input:', text);
+        if (!hasSentFirstMessage) {
+          inputSection.classList.remove('initial');
+          inputSection.classList.add('sticky');
+          chatArea.classList.add('active');
+          hasSentFirstMessage = true;
+        }
+        appendBubble(text, "user");
+        input.value = "";
+        if (history.length > 20) {
+          history = history.slice(-10);
+        }
+        const searchMatch = text.match(/^ابحث عن\s+(.+)/i);
+        const imageMatch = text.match(/^أنشئ صورة\s+(.+)/i);
+        const vagueMatch = text.match(/^(اكتب لي شيئا|اكتب شيء)$/i);
+        const yearMatch = text.match(/\b2025\b/i);
+        if (vagueMatch) {
+          appendBubble("من فضلك، حدد موضوعًا أو سؤالًا معينًا تريد مني الكتابة عنه!", "ai");
+          history.push({ role: "ai", text: "طلب توضيح لموضوع غامض" });
+          return;
+        }
+        if (yearMatch || searchMatch) {
+          const query = searchMatch ? searchMatch[1] : text;
+          await summarizeSearch(query);
+        } else if (imageMatch) {
+          navigateToImageCreation(imageMatch[1]);
+        } else {
+          await generateChatResponse(text);
+        }
+      } catch (e) {
+        console.error('Error in handleTextInput:', e);
+        appendBubble("حدث خطأ أثناء معالجة الإدخال.", "ai");
+      }
+    }
+
+    const sendBtn = document.getElementById("send");
+    const imageBtn = document.getElementById("image");
+    const terbocodeBtn = document.getElementById("terbocode");
+    const terboeduBtn = document.getElementById("terboedu");
+    const moreBtn = document.getElementById("more");
+    const moreOptionsContainer = document.getElementById("moreOptionsContainer");
+    const inputField = document.getElementById("input");
+
+    if (moreBtn && moreOptionsContainer) {
+      moreBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log('More button clicked');
+        moreOptionsContainer.classList.toggle('active');
+      });
+    } else {
+      console.error('More button or more options container not found');
+    }
+
+    // Close more options on outside click
+    document.addEventListener('click', (e) => {
+      if (!moreOptionsContainer.contains(e.target) && !moreBtn.contains(e.target)) {
+        moreOptionsContainer.classList.remove('active');
+      }
+    });
+
+    function updateTextDirection() {
+      try {
+        const text = inputField.value;
+        const isArabic = /[\u0600-\u06FF]/.test(text);
+        if (isArabic) {
+          inputField.classList.remove('ltr');
+        } else if (text) {
+          inputField.classList.add('ltr');
+        } else {
+          inputField.classList.remove('ltr');
+        }
+        console.log('Text direction:', isArabic ? 'rtl' : 'ltr');
+      } catch (e) {
+        console.error('Error in updateTextDirection:', e);
+      }
+    }
+    if (inputField) {
+      inputField.addEventListener('input', updateTextDirection);
+    } else {
+      console.error('Input field not found');
+    }
+
+    if (sendBtn) {
+      sendBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log('Send button clicked');
+        handleTextInput();
+      });
+    } else {
+      console.error('Send button not found');
+    }
+
+    if (imageBtn) {
+      imageBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log('Image button clicked');
+        const input = document.getElementById("input").value.trim();
+        navigateToImageCreation(input);
+        moreOptionsContainer.classList.remove('active');
+      });
+    } else {
+      console.error('Image button not found');
+    }
+
+    if (terbocodeBtn) {
+      terbocodeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log('Terbo.code button clicked');
+        navigateToTerboCode();
+        moreOptionsContainer.classList.remove('active');
+      });
+    } else {
+      console.error('Terbo.code button not found');
+    }
+
+    if (terboeduBtn) {
+      terboeduBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log('Terbo.edu button clicked');
+        navigateToTerboEdu();
+        moreOptionsContainer.classList.remove('active');
+      });
+    } else {
+      console.error('Terbo.edu button not found');
+    }
+
+    if (inputField) {
+      inputField.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          console.log('Enter key pressed');
+          handleTextInput();
+        }
+      });
+    } else {
+      console.error('Input field not found');
+    }
+
+    const micBtn = document.getElementById("mic");
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (Recognition) {
+      const recog = new Recognition();
+      recog.lang = "ar-EG";
+      recog.continuous = false;
+      if (micBtn) {
+        micBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          try {
+            console.log('Mic button clicked');
+            if (isSpeaking) {
+              stopSpeech();
+              return;
+            }
+            shouldSpeak = true;
+            micBtn.classList.add("active");
+            recog.start();
+            console.log('Speech recognition started');
+          } catch (e) {
+            console.error('Error in mic button click:', e);
+          }
+        });
+        recog.onresult = (e) => {
+          try {
+            micBtn.classList.remove("active");
+            const msg = e.results[0][0].transcript.trim();
+            if (msg.length < 3) return;
+            if (!hasSentFirstMessage) {
+              inputSection.classList.remove('initial');
+              inputSection.classList.add('sticky');
+              chatArea.classList.add('active');
+              hasSentFirstMessage = true;
+            }
+            appendBubble(msg, "user");
+            inputField.value = "";
+            console.log('Speech input:', msg);
+            const searchMatch = msg.match(/^ابحث عن\s+(.+)/i);
+            const imageMatch = msg.match(/^أنشئ صورة\s+(.+)/i);
+            const vagueMatch = msg.match(/^(اكتب لي شيئا|اكتب شيء)$/i);
+            const yearMatch = msg.match(/\b2025\b/i);
+            if (vagueMatch) {
+              appendBubble("من فضلك، حدد موضوعًا أو سؤالًا معينًا تريد مني الكتابة عنه!", "ai");
+              history.push({ role: "ai", text: "طلب توضيح لموضوع غامض" });
+              return;
+            }
+            if (yearMatch || searchMatch) {
+              const query = searchMatch ? searchMatch[1] : msg;
+              summarizeSearch(query);
+            } else if (imageMatch) {
+              navigateToImageCreation(imageMatch[1]);
+            } else {
+              generateChatResponse(msg);
+            }
+          } catch (e) {
+            console.error('Error in speech recognition result:', e);
+          }
+        };
+        recog.onend = () => {
+          micBtn.classList.remove('active');
+          console.log('Speech recognition ended');
+        };
+        recog.onerror = (e) => {
+          console.error('Speech recognition error:', e.error);
+        };
+      } else {
+        console.error('Mic button not found');
+      }
+    } else {
+      if (micBtn) micBtn.style.display = "none";
+      console.log('Speech recognition not supported');
+    }
+  </script>
+</body>
+</html>

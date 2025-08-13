@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABDOX-AI - Create AI Art</title>
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-dark: #4c1d95;
+            --background: #0f172a;
+            --text: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: clamp(1.8rem, 5vw, 2.2rem);
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        header p {
+            font-size: clamp(0.9rem, 3vw, 1rem);
+        }
+
+        .main-content {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .generation-section {
+            flex: 2;
+            min-width: 280px;
+            width: 100%;
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 0.5rem;
+            color: var(--text);
+            resize: vertical;
+            min-height: 100px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-box {
+            background: #1e293b;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .option-box:hover {
+            background: var(--primary-dark);
+        }
+
+        .option-box h3 {
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            margin-bottom: 0.3rem;
+        }
+
+        .option-box p {
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            transition: 0.2s;
+            width: 100%;
+            touch-action: manipulation;
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+        }
+
+        button:disabled {
+            background: #475569;
+            cursor: not-allowed;
+        }
+
+        .output-section {
+            flex: 1;
+            min-width: 280px;
+            width: 100%;
+        }
+
+        .image-placeholder {
+            background: #1e293b;
+            border-radius: 0.5rem;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .generated-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 4px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-bottom: 0.8rem;
+        }
+
+        .loading p {
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .history-gallery {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .history-item {
+            background: #1e293b;
+            border-radius: 0.5rem;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .history-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+            opacity: 0;
+        }
+
+        .history-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 0, 0, 1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .main-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .generation-section,
+            .output-section {
+                min-width: 100%;
+            }
+
+            textarea {
+                min-height: 80px;
+            }
+
+            .options {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+
+            .history-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .delete-btn {
+                opacity: 1;
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+
+            .logo {
+                font-size: clamp(1.5rem, 5vw, 1.8rem);
+            }
+
+            header p {
+                font-size: clamp(0.8rem, 3vw, 0.9rem);
+            }
+
+            button {
+                padding: 0.7rem 1rem;
+            }
+
+            .spinner {
+                width: 28px;
+                height: 28px;
+            }
+
+            .history-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">ABDOX-AI</div>
+            <p>Transform your ideas into stunning AI-generated images</p>
+        </header>
+
+        <main class="main-content">
+            <section class="generation-section">
+                <div class="input-group">
+                    <textarea id="prompt" placeholder="Describe the image you want to create..."></textarea>
+                </div>
+                <div class="input-group">
+                    <textarea id="negative-prompt" placeholder="What should be excluded from the image? (optional)"></textarea>
+                </div>
+
+                <div class="options">
+                    <div class="option-box">
+                        <h3>Style</h3>
+                        <p>Digital Art</p>
+                    </div>
+                    <div class="option-box">
+                        <h3>Size</h3>
+                        <p>1024x1024</p>
+                    </div>
+                    <div class="option-box">
+                        <h3>Quality</h3>
+                        <p>HD</p>
+                    </div>
+                </div>
+
+                <button onclick="generateImage()">Generate Image</button>
+            </section>
+
+            <section class="output-section">
+                <div class="image-placeholder">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Generating your masterpiece...</p>
+                    </div>
+                    <img class="generated-image" alt="Generated image">
+                </div>
+                <button class="download-btn" style="margin-top: 1rem;" disabled>Download Image</button>
+            </section>
+        </main>
+
+        <section class="history-gallery">
+            <!-- Generated images would appear here -->
+        </section>
+    </div>
+
+    <script>
+        async function generateImage() {
+            const prompt = document.getElementById('prompt').value;
+            const negativePrompt = document.getElementById('negative-prompt').value;
+            if (!prompt) {
+                alert('Please enter a description');
+                return;
+            }
+
+            const loading = document.querySelector('.loading');
+            const image = document.querySelector('.generated-image');
+            const downloadBtn = document.querySelector('.download-btn');
+
+            // Show loading state
+            loading.style.display = 'flex';
+            image.style.display = 'none';
+            downloadBtn.disabled = true;
+
+            try {
+                // Construct API URL with parameters
+                let apiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}`;
+                const params = new URLSearchParams({
+                    seed: Date.now(),
+                    width: 1024,
+                    height: 1024,
+                });
+
+                if (negativePrompt) {
+                    params.append('n_prompt', negativePrompt);
+                }
+
+                apiUrl += `?${params.toString()}`;
+
+                // Load original image
+                const originalImage = new Image();
+                originalImage.crossOrigin = 'anonymous';
+                originalImage.src = apiUrl;
+
+                // Wait for image to load
+                await new Promise((resolve, reject) => {
+                    originalImage.onload = () => resolve();
+                    originalImage.onerror = () => reject(new Error('Failed to load image'));
+                    setTimeout(() => reject(new Error('Image loading timed out')), 30000);
+                });
+
+                // Create canvas to crop and add watermark
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Crop bottom-right corner (assuming watermark is there)
+                const cropSize = 900;
+                canvas.width = cropSize;
+                canvas.height = cropSize;
+
+                // Draw cropped image
+                ctx.drawImage(originalImage, 0, 0, cropSize, cropSize, 0, 0, cropSize, cropSize);
+
+                // Add ABDOX-AI watermark
+                ctx.font = 'bold 40px Arial';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText('ABDOX-AI', canvas.width - 20, canvas.height - 20);
+
+                // Set cropped and watermarked image as display image
+                const imageDataUrl = canvas.toDataURL('image/png');
+                image.src = imageDataUrl;
+
+                // Update UI
+                loading.style.display = 'none';
+                image.style.display = 'block';
+                downloadBtn.disabled = false;
+
+                // Add to history gallery
+                const historyGallery = document.querySelector('.history-gallery');
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                const historyImg = document.createElement('img');
+                historyImg.src = imageDataUrl;
+                historyImg.alt = 'Generated image';
+                historyItem.appendChild(historyImg);
+
+                // Add delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = '×';
+                deleteBtn.title = 'Delete image';
+                deleteBtn.onclick = () => historyItem.remove();
+                historyItem.appendChild(deleteBtn);
+
+                historyGallery.prepend(historyItem);
+            } catch (error) {
+                console.error('Error generating image:', error);
+                alert('Failed to generate image. Please try again or check your internet connection.');
+                loading.style.display = 'none';
+                image.style.display = 'none';
+                downloadBtn.disabled = true;
+            }
+        }
+
+        // Enable download button functionality
+        document.querySelector('.download-btn').addEventListener('click', async () => {
+            const image = document.querySelector('.generated-image');
+            if (image.src && !document.querySelector('.download-btn').disabled) {
+                try {
+                    // Create a temporary image to handle CORS
+                    const tempImage = new Image();
+                    tempImage.crossOrigin = 'anonymous';
+                    tempImage.src = image.src;
+
+                    await new Promise((resolve, reject) => {
+                        tempImage.onload = resolve;
+                        tempImage.onerror = () => reject(new Error('Failed to load image for download'));
+                    });
+
+                    // Create canvas to ensure image is properly formatted
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 900;
+                    canvas.height = 900;
+                    ctx.drawImage(tempImage, 0, 0);
+
+                    // Create download link
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'generated-image.png';
+                    link.click();
+                } catch (error) {
+                    console.error('Error downloading image:', error);
+                    alert('Failed to download image. Please try again.');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

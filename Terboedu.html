@@ -1,0 +1,3020 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سؤال - منصة تعليمية للمعلمين</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Noto Sans Arabic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        /* Auth Forms */
+        .auth-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+        }
+
+        .auth-form {
+            background: white;
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-500);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .welcome-section {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+            margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .welcome-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .welcome-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .dashboard-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .dashboard-content {
+            display: flex;
+            min-height: 600px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--gray-100);
+            padding: 2rem;
+            border-left: 1px solid var(--gray-200);
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 1rem;
+        }
+
+        .control-group {
+            margin-bottom: 1rem;
+        }
+
+        .control-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .control-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .control-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Editor */
+        .editor-container {
+            flex: 1;
+            padding: 2rem;
+            background: white;
+            position: relative;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            padding: 0.5rem;
+            border: 1px solid var(--gray-300);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--gray-100);
+        }
+
+        .toolbar-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .document-editor {
+            min-height: 500px;
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            background: white;
+            position: relative;
+            overflow: auto;
+        }
+
+        .document-editor.dragover {
+            border-color: var(--primary-color);
+            background: var(--gray-50);
+        }
+
+        .editable-element {
+            position: relative;
+            margin: 1rem 0;
+            padding: 0.5rem;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: text;
+            min-height: 1.5rem;
+        }
+
+        .editable-element:hover {
+            border-color: var(--gray-300);
+        }
+
+        .editable-element.selected {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .editable-element.dragging {
+            opacity: 0.5;
+        }
+
+        .element-controls {
+            position: absolute;
+            top: -30px;
+            right: 0;
+            display: none;
+            gap: 0.25rem;
+        }
+
+        .editable-element.selected .element-controls {
+            display: flex;
+        }
+
+        .control-btn {
+            padding: 0.25rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .image-element {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            cursor: move;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-600);
+        }
+
+        .spinner {
+            border: 3px solid var(--gray-300);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-left: none;
+                border-bottom: 1px solid var(--gray-200);
+            }
+
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+
+            .auth-form {
+                margin: 1rem;
+                padding: 2rem;
+            }
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Language-specific styles */
+        body[dir="ltr"] .nav {
+            flex-direction: row;
+        }
+
+        /* Text direction styles */
+        body[data-lang="ar"] .text-container,
+        body[data-lang="ar"] .editable-element,
+        body[data-lang="ar"] #documentEditor {
+            direction: rtl;
+            text-align: right;
+        }
+
+        body[data-lang="en"] .text-container,
+        body[data-lang="en"] .editable-element,
+        body[data-lang="en"] #documentEditor {
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* Input field direction */
+        body[data-lang="ar"] input,
+        body[data-lang="ar"] textarea {
+            direction: rtl;
+            text-align: right;
+        }
+
+        body[data-lang="en"] input,
+        body[data-lang="en"] textarea {
+            direction: ltr;
+            text-align: left;
+        }
+
+        body[dir="ltr"] .nav-buttons {
+            order: 2;
+        }
+
+        body[dir="ltr"] .logo {
+            order: 1;
+        }
+
+        body[dir="ltr"] .dashboard-content {
+            flex-direction: row;
+        }
+
+        body[dir="ltr"] .sidebar {
+            order: 1;
+            border-left: none;
+            border-right: 1px solid var(--gray-200);
+        }
+
+        body[dir="ltr"] .editor-container {
+            order: 2;
+        }
+
+        body[dir="ltr"] .welcome-section {
+            text-align: center;
+        }
+
+        body[dir="ltr"] .form-group {
+            text-align: left;
+        }
+
+        body[dir="ltr"] .element-controls {
+            right: auto;
+            left: 0;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            border: 1px solid;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            border-color: #34d399;
+            color: #065f46;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            border-color: #f87171;
+            color: #991b1b;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            border-color: #60a5fa;
+            color: #1e40af;
+        }
+
+        /* File Input Styling */
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Color Palette */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            border-color: var(--gray-400);
+        }
+
+        .color-option.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Container Element Styling */
+        .container-element {
+            position: relative;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            background: rgba(59, 130, 246, 0.3);
+            cursor: move;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .container-element.dragging {
+            opacity: 0.5;
+        }
+
+        .container-element:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .container-element.selected {
+            border-color: var(--accent-color);
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        /* Background Styling */
+        .document-editor.has-background {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Image Element Improvements */
+        .image-element {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            cursor: move;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .image-element:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-element.selected {
+            border-color: var(--accent-color);
+        }
+
+        /* Image Resize Controls */
+        .image-resize-controls {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0.5rem;
+            border-radius: 6px;
+            z-index: 10;
+        }
+
+        /* Image Movement Controls */
+        .image-movement-controls {
+            position: absolute;
+            top: -50px;
+            right: -10px;
+            display: none;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0.25rem;
+            border-radius: 6px;
+            z-index: 11;
+        }
+
+        .movement-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.125rem;
+            width: 72px;
+            height: 72px;
+        }
+
+        .movement-btn {
+            padding: 0.25rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+        }
+
+        .movement-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        .movement-btn:nth-child(2) { /* Up */
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .movement-btn:nth-child(1) { /* Left */
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .movement-btn:nth-child(3) { /* Right */
+            grid-column: 3;
+            grid-row: 2;
+        }
+
+        .movement-btn:nth-child(4) { /* Down */
+            grid-column: 2;
+            grid-row: 3;
+        }
+
+        .image-container.selected .image-resize-controls {
+            display: flex;
+        }
+
+        .image-container.selected .image-movement-controls {
+            display: block;
+        }
+
+        .resize-btn {
+            padding: 0.25rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            min-width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .resize-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        .size-display {
+            color: white;
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* AI Generation Panel */
+        .ai-panel {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="#" class="logo">سؤال</a>
+            <div class="nav-buttons" id="navButtons">
+                <button class="btn btn-secondary" onclick="toggleLanguage()" id="languageToggle">
+                    <i class="fas fa-globe"></i>
+                    English
+                </button>
+                <button class="btn btn-secondary" onclick="showLogin()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span class="text-login">تسجيل الدخول</span>
+                </button>
+                <button class="btn btn-primary" onclick="showRegister()">
+                    <i class="fas fa-user-plus"></i>
+                    <span class="text-register">إنشاء حساب</span>
+                </button>
+            </div>
+            <div class="nav-buttons hidden" id="userButtons">
+                <button class="btn btn-secondary" onclick="toggleLanguage()" id="languageToggleUser">
+                    <i class="fas fa-globe"></i>
+                    English
+                </button>
+                <span id="welcomeUser" class="btn btn-secondary"></span>
+                <button class="btn btn-danger" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="text-logout">تسجيل الخروج</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Welcome Section -->
+        <section class="welcome-section container" id="welcomeSection">
+            <h1 class="welcome-title text-welcome-title">مرحباً بك في منصة سؤال</h1>
+            <p class="welcome-subtitle text-welcome-subtitle">منصة تعليمية متطورة للمعلمين لإنشاء المواد التعليمية بالذكاء الاصطناعي</p>
+            <div class="nav-buttons" style="justify-content: center; margin-top: 2rem;">
+                <button class="btn btn-primary" onclick="showRegister()">
+                    <i class="fas fa-rocket"></i>
+                    <span class="text-start-now">ابدأ الآن</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Dashboard -->
+        <section class="dashboard container" id="dashboard">
+            <div class="dashboard-header">
+                <h2 class="text-workspace">مساحة العمل - إنشاء المواد التعليمية</h2>
+                <p class="text-workspace-desc">استخدم الذكاء الاصطناعي لإنشاء محتوى تعليمي متميز</p>
+            </div>
+            <div class="dashboard-content">
+                <!-- Sidebar Controls -->
+                <aside class="sidebar">
+                    <!-- AI Generation Panel -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-robot"></i>
+                            <span class="text-ai-generator">مولد المحتوى بالذكاء الاصطناعي</span>
+                        </h3>
+                        <div class="ai-panel">
+                            <div class="control-group">
+                                <label class="control-label">موضوع الدرس</label>
+                                <input type="text" class="control-input" id="lessonTopic" placeholder="مثال: الهندسة التحليلية">
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">المادة الدراسية</label>
+                                <select class="control-input" id="subject">
+                                    <option value="">اختر المادة</option>
+                                    <option value="رياضيات">رياضيات</option>
+                                    <option value="فيزياء">فيزياء</option>
+                                    <option value="كيمياء">كيمياء</option>
+                                    <option value="أحياء">أحياء</option>
+                                    <option value="عربي">لغة عربية</option>
+                                    <option value="انجليزي">لغة إنجليزية</option>
+                                    <option value="تاريخ">تاريخ</option>
+                                    <option value="جغرافيا">جغرافيا</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">نوع المحتوى</label>
+                                <select class="control-input" id="contentType">
+                                    <option value="شرح" data-en="Explanation">شرح الدرس</option>
+                                    <option value="أسئلة" data-en="Questions">أسئلة وتمارين</option>
+                                    <option value="ملخص" data-en="Summary">ملخص الدرس</option>
+                                    <option value="امتحان" data-en="Exam">امتحان تجريبي</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">تفاصيل إضافية</label>
+                                <textarea class="control-textarea" id="additionalDetails" placeholder="أضف أي تفاصيل أو متطلبات خاصة..."></textarea>
+                            </div>
+                            <button class="generate-btn" onclick="generateContent()" id="generateBtn">
+                                <i class="fas fa-magic"></i>
+                                إنشاء المحتوى
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Text Formatting -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-text-height"></i>
+                            تنسيق النص
+                        </h3>
+                        <div class="control-group">
+                            <label class="control-label">حجم الخط</label>
+                            <select class="control-input" id="fontSize" onchange="applyFontSize()">
+                                <option value="12px">صغير (12px)</option>
+                                <option value="14px">عادي (14px)</option>
+                                <option value="16px" selected>متوسط (16px)</option>
+                                <option value="18px">كبير (18px)</option>
+                                <option value="24px">كبير جداً (24px)</option>
+                                <option value="32px">عنوان (32px)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">لون النص</label>
+                            <input type="color" class="control-input" id="textColor" value="#000000" onchange="applyTextColor()">
+                        </div>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-image"></i>
+                            إضافة صورة
+                        </h3>
+                        <div class="file-input-wrapper">
+                            <button class="btn btn-primary" onclick="document.getElementById('imageUpload').click()">
+                                <i class="fas fa-upload"></i>
+                                اختر صورة
+                            </button>
+                            <input type="file" class="file-input" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)">
+                        </div>
+                        
+                        <!-- Image Size Controls for Selected Image -->
+                        <div id="imageControls" style="display: none; margin-top: 1rem;">
+                            <div class="control-group">
+                                <label class="control-label">حجم الصورة المحددة</label>
+                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                    <button class="btn btn-secondary" onclick="resizeSelectedImage('smaller')" style="padding: 0.5rem;">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="range" id="imageSizeSlider" min="100" max="800" step="50" value="300" 
+                                           onchange="resizeSelectedImageBySlider(this.value)" style="flex: 1;">
+                                    <button class="btn btn-secondary" onclick="resizeSelectedImage('larger')" style="padding: 0.5rem;">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div style="text-align: center; margin-top: 0.5rem;">
+                                    <span id="currentImageSize">300px</span>
+                                </div>
+                                <button class="btn btn-secondary" onclick="resetSelectedImageSize()" style="width: 100%; margin-top: 0.5rem;">
+                                    <i class="fas fa-expand-arrows-alt"></i>
+                                    الحجم الأصلي
+                                </button>
+                            </div>
+                            
+                            <!-- Image Movement Controls -->
+                            <div class="control-group" style="margin-top: 1rem;">
+                                <label class="control-label">تحريك الصورة</label>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; max-width: 120px; margin: 0 auto;">
+                                    <div></div>
+                                    <button class="btn btn-secondary" onclick="moveSelectedImage('up')" style="padding: 0.5rem;">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </button>
+                                    <div></div>
+                                    <button class="btn btn-secondary" onclick="moveSelectedImage('left')" style="padding: 0.5rem;">
+                                        <i class="fas fa-arrow-left"></i>
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="resetSelectedImagePosition()" style="padding: 0.5rem;" title="إعادة تعيين الموضع">
+                                        <i class="fas fa-home"></i>
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="moveSelectedImage('right')" style="padding: 0.5rem;">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                    <div></div>
+                                    <button class="btn btn-secondary" onclick="moveSelectedImage('down')" style="padding: 0.5rem;">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </button>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Background Controls -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-palette"></i>
+                            خلفية الملزمة
+                        </h3>
+                        <div class="file-input-wrapper">
+                            <button class="btn btn-secondary" onclick="document.getElementById('backgroundUpload').click()">
+                                <i class="fas fa-image"></i>
+                                تغيير الخلفية
+                            </button>
+                            <input type="file" class="file-input" id="backgroundUpload" accept="image/*" onchange="handleBackgroundUpload(event)">
+                        </div>
+                        <button class="btn btn-secondary" onclick="removeBackground()" style="width: 100%; margin-top: 0.5rem;">
+                            <i class="fas fa-times"></i>
+                            إزالة الخلفية
+                        </button>
+                    </div>
+
+                    <!-- Container Tools -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-square"></i>
+                            أدوات الحاويات
+                        </h3>
+                        <button class="btn btn-success" onclick="addContainer()" style="width: 100%; margin-bottom: 0.5rem;">
+                            <i class="fas fa-plus"></i>
+                            إضافة حاوية
+                        </button>
+                        
+                        <div class="control-group">
+                            <label class="control-label">لون الحاوية</label>
+                            <div class="color-palette">
+                                <div class="color-option" style="background: #3b82f6;" onclick="setContainerColor('#3b82f6')" title="أزرق"></div>
+                                <div class="color-option" style="background: #10b981;" onclick="setContainerColor('#10b981')" title="أخضر"></div>
+                                <div class="color-option" style="background: #f59e0b;" onclick="setContainerColor('#f59e0b')" title="أصفر"></div>
+                                <div class="color-option" style="background: #ef4444;" onclick="setContainerColor('#ef4444')" title="أحمر"></div>
+                                <div class="color-option" style="background: #8b5cf6;" onclick="setContainerColor('#8b5cf6')" title="بنفسجي"></div>
+                                <div class="color-option" style="background: #06b6d4;" onclick="setContainerColor('#06b6d4')" title="فيروزي"></div>
+                                <div class="color-option" style="background: #84cc16;" onclick="setContainerColor('#84cc16')" title="أخضر فاتح"></div>
+                                <div class="color-option" style="background: #f97316;" onclick="setContainerColor('#f97316')" title="برتقالي"></div>
+                            </div>
+                            <input type="color" class="control-input" id="customContainerColor" onchange="setContainerColor(this.value)" style="margin-top: 0.5rem;" value="#3b82f6">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label">شفافية الحاوية: <span id="opacityValue">30%</span></label>
+                            <input type="range" class="control-input" id="containerOpacity" min="10" max="100" step="10" value="30" onchange="updateContainerOpacity(this.value)">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label">نمط الحدود</label>
+                            <select class="control-input" id="containerBorder" onchange="updateContainerBorder(this.value)">
+                                <option value="none">بدون حدود</option>
+                                <option value="solid">خط صلب</option>
+                                <option value="dashed">خط متقطع</option>
+                                <option value="dotted">نقاط</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Document Actions -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-file-alt"></i>
+                            إجراءات المستند
+                        </h3>
+                        <button class="btn btn-success" onclick="saveDocument()" style="width: 100%; margin-bottom: 0.5rem;">
+                            <i class="fas fa-save"></i>
+                            حفظ المستند
+                        </button>
+                        <button class="btn btn-primary" onclick="exportDocument()" style="width: 100%; margin-bottom: 0.5rem;">
+                            <i class="fas fa-download"></i>
+                            تصدير PDF
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearDocument()" style="width: 100%;">
+                            <i class="fas fa-trash"></i>
+                            مسح المحتوى
+                        </button>
+                    </div>
+                </aside>
+
+                <!-- Main Editor -->
+                <div class="editor-container">
+                    <!-- Toolbar -->
+                    <div class="editor-toolbar">
+                        <button class="toolbar-btn" onclick="formatText('bold')" title="غامق">
+                            <i class="fas fa-bold"></i>
+                        </button>
+                        <button class="toolbar-btn" onclick="formatText('italic')" title="مائل">
+                            <i class="fas fa-italic"></i>
+                        </button>
+                        <button class="toolbar-btn" onclick="formatText('underline')" title="تحته خط">
+                            <i class="fas fa-underline"></i>
+                        </button>
+                        <button class="toolbar-btn" onclick="formatText('justifyRight')" title="محاذاة يمين">
+                            <i class="fas fa-align-right"></i>
+                        </button>
+                        <button class="toolbar-btn" onclick="formatText('justifyCenter')" title="محاذاة وسط">
+                            <i class="fas fa-align-center"></i>
+                        </button>
+                        <button class="toolbar-btn" onclick="formatText('justifyLeft')" title="محاذاة يسار">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+                        <button class="toolbar-btn" onclick="addTextElement()" title="إضافة نص">
+                            <i class="fas fa-plus"></i>
+                            نص
+                        </button>
+                    </div>
+
+                    <!-- Document Editor -->
+                    <div class="document-editor" id="documentEditor" 
+                         ondrop="handleDrop(event)" 
+                         ondragover="handleDragOver(event)"
+                         ondragleave="handleDragLeave(event)">
+                        <div class="editable-element" contenteditable="true">
+                            <h2>عنوان المستند</h2>
+                        </div>
+                        <div class="editable-element" contenteditable="true">
+                            <p>ابدأ في كتابة المحتوى هنا أو استخدم مولد المحتوى بالذكاء الاصطناعي...</p>
+                        </div>
+                    </div>
+
+                    <!-- Loading Indicator -->
+                    <div class="loading" id="loadingIndicator">
+                        <div class="spinner"></div>
+                        <p>جاري إنشاء المحتوى بالذكاء الاصطناعي...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div class="auth-container" id="loginModal">
+        <form class="auth-form" onsubmit="handleLogin(event)">
+            <button type="button" class="close-btn" onclick="closeAuthModals()">&times;</button>
+            <h2 class="form-title">تسجيل الدخول</h2>
+            <div class="form-group">
+                <label class="form-label">البريد الإلكتروني</label>
+                <input type="email" class="form-input" id="loginEmail" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">كلمة المرور</label>
+                <input type="password" class="form-input" id="loginPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-sign-in-alt"></i>
+                دخول
+            </button>
+            <p style="margin-top: 1rem; color: var(--gray-600);">
+                ليس لديك حساب؟ 
+                <a href="#" onclick="showRegister()" style="color: var(--primary-color);">إنشاء حساب جديد</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="auth-container" id="registerModal">
+        <form class="auth-form" onsubmit="handleRegister(event)">
+            <button type="button" class="close-btn" onclick="closeAuthModals()">&times;</button>
+            <h2 class="form-title">إنشاء حساب جديد</h2>
+            <div class="form-group">
+                <label class="form-label">الاسم الكامل</label>
+                <input type="text" class="form-input" id="registerName" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">البريد الإلكتروني</label>
+                <input type="email" class="form-input" id="registerEmail" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">كلمة المرور</label>
+                <input type="password" class="form-input" id="registerPassword" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">تأكيد كلمة المرور</label>
+                <input type="password" class="form-input" id="confirmPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-user-plus"></i>
+                إنشاء الحساب
+            </button>
+            <p style="margin-top: 1rem; color: var(--gray-600);">
+                لديك حساب بالفعل؟ 
+                <a href="#" onclick="showLogin()" style="color: var(--primary-color);">تسجيل الدخول</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        // Global Variables
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBJvhPW1ZSldEsWcGoNwgN4LuarfBPtnXY";
+        let currentUser = null;
+        let selectedElement = null;
+        let documents = JSON.parse(localStorage.getItem('documents') || '[]');
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            initializeEditor();
+            loadDocuments();
+        });
+
+        // Authentication Functions
+        function checkAuthStatus() {
+            const user = localStorage.getItem('currentUser');
+            if (user) {
+                currentUser = JSON.parse(user);
+                showDashboard();
+            }
+        }
+
+        function showLogin() {
+            closeAuthModals();
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function showRegister() {
+            closeAuthModals();
+            document.getElementById('registerModal').style.display = 'flex';
+        }
+
+        function closeAuthModals() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('registerModal').style.display = 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Get users from localStorage
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showAlert('تم تسجيل الدخول بنجاح', 'success');
+                closeAuthModals();
+                showDashboard();
+            } else {
+                showAlert('البريد الإلكتروني أو كلمة المرور غير صحيحة', 'error');
+            }
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                showAlert('كلمة المرور غير متطابقة', 'error');
+                return;
+            }
+
+            // Get existing users
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Check if email already exists
+            if (users.find(u => u.email === email)) {
+                showAlert('البريد الإلكتروني مستخدم بالفعل', 'error');
+                return;
+            }
+
+            // Create new user
+            const newUser = {
+                id: Date.now().toString(),
+                name,
+                email,
+                password,
+                createdAt: new Date().toISOString()
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+
+            showAlert('تم إنشاء الحساب بنجاح', 'success');
+            closeAuthModals();
+            showDashboard();
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            showWelcome();
+            showAlert('تم تسجيل الخروج بنجاح', 'info');
+        }
+
+        function showDashboard() {
+            document.getElementById('welcomeSection').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('navButtons').classList.add('hidden');
+            document.getElementById('userButtons').classList.remove('hidden');
+            document.getElementById('welcomeUser').textContent = `مرحباً ${currentUser.name}`;
+        }
+
+        function showWelcome() {
+            document.getElementById('welcomeSection').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('navButtons').classList.remove('hidden');
+            document.getElementById('userButtons').classList.add('hidden');
+        }
+
+        // Editor Functions
+        function initializeEditor() {
+            const editor = document.getElementById('documentEditor');
+            
+            // Add click event to select elements
+            editor.addEventListener('click', function(e) {
+                const element = e.target.closest('.editable-element');
+                if (element) {
+                    selectElement(element);
+                }
+            });
+
+            // Initialize drag and drop for elements
+            initializeDragAndDrop();
+        }
+
+        function selectElement(element) {
+            // Remove previous selection
+            document.querySelectorAll('.editable-element.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // Select new element
+            element.classList.add('selected');
+            selectedElement = element;
+            
+            // Show/hide appropriate controls
+            if (element.classList.contains('image-container')) {
+                showImageControls();
+                const currentWidth = element.dataset.currentWidth || '300';
+                updateSidebarImageControls(currentWidth);
+            } else {
+                hideImageControls();
+            }
+        }
+
+        function addTextElement() {
+            const editor = document.getElementById('documentEditor');
+            const newElement = document.createElement('div');
+            newElement.className = 'editable-element text-container';
+            newElement.contentEditable = true;
+            
+            // Get current language and apply correct direction
+            const isArabic = document.body.getAttribute('data-lang') === 'ar';
+            const direction = isArabic ? 'rtl' : 'ltr';
+            const textAlign = isArabic ? 'right' : 'left';
+            const placeholderText = isArabic ? 'نص جديد - انقر للتحرير' : 'New text - click to edit';
+            
+            // Apply direction and alignment
+            newElement.style.direction = direction;
+            newElement.style.textAlign = textAlign;
+            newElement.innerHTML = `<p>${placeholderText}</p>`;
+            newElement.onclick = () => selectElement(newElement);
+            
+            // Add controls
+            newElement.innerHTML += `
+                <div class="element-controls">
+                    <button class="control-btn" onclick="moveElementUp(this.parentElement.parentElement)" title="${isArabic ? 'تحريك لأعلى' : 'Move Up'}">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button class="control-btn" onclick="moveElementDown(this.parentElement.parentElement)" title="${isArabic ? 'تحريك لأسفل' : 'Move Down'}">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button class="control-btn" onclick="deleteElement(this.parentElement.parentElement)" title="${isArabic ? 'حذف' : 'Delete'}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            editor.appendChild(newElement);
+            selectElement(newElement);
+        }
+
+        function formatText(command) {
+            if (selectedElement && selectedElement.contentEditable === 'true') {
+                document.execCommand(command);
+                selectedElement.focus();
+            }
+        }
+
+        function applyFontSize() {
+            const fontSize = document.getElementById('fontSize').value;
+            if (selectedElement) {
+                selectedElement.style.fontSize = fontSize;
+            }
+        }
+
+        function applyTextColor() {
+            const color = document.getElementById('textColor').value;
+            if (selectedElement) {
+                selectedElement.style.color = color;
+            }
+        }
+
+        // Image Upload
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    addImageElement(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addImageElement(imageSrc) {
+            const editor = document.getElementById('documentEditor');
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'editable-element';
+            imageContainer.draggable = true;
+            imageContainer.innerHTML = `
+                <img src="${imageSrc}" class="image-element" alt="صورة" draggable="false">
+                <div class="element-controls">
+                    <button class="control-btn" onclick="moveElementUp(this.parentElement)" title="تحريك لأعلى">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button class="control-btn" onclick="moveElementDown(this.parentElement)" title="تحريك لأسفل">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button class="control-btn" onclick="deleteElement(this.parentElement)" title="حذف">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            imageContainer.onclick = () => selectElement(imageContainer);
+            editor.appendChild(imageContainer);
+            selectElement(imageContainer);
+        }
+
+        // Element Controls
+        function moveElementUp(element) {
+            const previous = element.previousElementSibling;
+            if (previous) {
+                element.parentNode.insertBefore(element, previous);
+            }
+        }
+
+        function moveElementDown(element) {
+            const next = element.nextElementSibling;
+            if (next) {
+                element.parentNode.insertBefore(next, element);
+            }
+        }
+
+        function deleteElement(element) {
+            if (confirm('هل أنت متأكد من حذف هذا العنصر؟')) {
+                element.remove();
+                selectedElement = null;
+            }
+        }
+
+        // Drag and Drop
+        function initializeDragAndDrop() {
+            const editor = document.getElementById('documentEditor');
+
+            editor.addEventListener('dragstart', function(e) {
+                if (e.target.classList.contains('editable-element')) {
+                    e.target.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/html', e.target.outerHTML);
+                }
+            });
+
+            editor.addEventListener('dragend', function(e) {
+                e.target.classList.remove('dragging');
+            });
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+            document.getElementById('documentEditor').classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            document.getElementById('documentEditor').classList.remove('dragover');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            document.getElementById('documentEditor').classList.remove('dragover');
+            
+            const draggedElement = document.querySelector('.dragging');
+            if (draggedElement) {
+                const afterElement = getDragAfterElement(document.getElementById('documentEditor'), event.clientY);
+                if (afterElement == null) {
+                    document.getElementById('documentEditor').appendChild(draggedElement);
+                } else {
+                    document.getElementById('documentEditor').insertBefore(draggedElement, afterElement);
+                }
+            }
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.editable-element:not(.dragging)')];
+            
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        // AI Content Generation
+        async function generateContent() {
+            const topic = document.getElementById('lessonTopic').value;
+            const subject = document.getElementById('subject').value;
+            const contentType = document.getElementById('contentType').value;
+            const additionalDetails = document.getElementById('additionalDetails').value;
+
+            if (!topic.trim()) {
+                const errorMessage = currentLanguage === 'ar' ? 'يرجى إدخال موضوع الدرس' : 'Please enter lesson topic';
+                showAlert(errorMessage, 'error');
+                return;
+            }
+
+            const generateBtn = document.getElementById('generateBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            generateBtn.disabled = true;
+            const loadingText = currentLanguage === 'ar' ? 'جاري الإنشاء...' : 'Generating...';
+            generateBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${loadingText}`;
+            loadingIndicator.style.display = 'block';
+
+            try {
+                const prompt = buildPrompt(topic, subject, contentType, additionalDetails);
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: prompt
+                            }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                let generatedContent = data.candidates[0].content.parts[0].text;
+                
+                // Clean up HTML code blocks if they appear
+                generatedContent = generatedContent.replace(/```html\n?/g, '');
+                generatedContent = generatedContent.replace(/```\n?/g, '');
+                generatedContent = generatedContent.replace(/`{3,}/g, '');
+                
+                insertGeneratedContent(generatedContent);
+                
+                const successMessage = currentLanguage === 'ar' ? 'تم إنشاء المحتوى بنجاح' : 'Content generated successfully';
+                showAlert(successMessage, 'success');
+
+            } catch (error) {
+                console.error('Error generating content:', error);
+                const errorMessage = currentLanguage === 'ar' ? 
+                    'حدث خطأ في إنشاء المحتوى. يرجى المحاولة مرة أخرى.' : 
+                    'Error generating content. Please try again.';
+                showAlert(errorMessage, 'error');
+            } finally {
+                generateBtn.disabled = false;
+                const buttonText = currentLanguage === 'ar' ? 'إنشاء المحتوى' : 'Generate Content';
+                generateBtn.innerHTML = `<i class="fas fa-magic"></i> ${buttonText}`;
+                loadingIndicator.style.display = 'none';
+            }
+        }
+
+        function buildPrompt(topic, subject, contentType, additionalDetails) {
+            // Get current language from the global variable
+            const isArabic = currentLanguage === 'ar';
+            
+            let prompt;
+            
+            if (isArabic) {
+                prompt = `أنت معلم خبير في ${subject || 'التعليم'}. `;
+                
+                switch(contentType) {
+                    case 'شرح':
+                        prompt += `اشرح موضوع "${topic}" بشكل مفصل وواضح. ابدأ بمقدمة عن الموضوع، ثم اشرح المفاهيم الأساسية خطوة بخطوة مع أمثلة توضيحية. لا تكتب أسئلة، بل ركز على الشرح التعليمي فقط. `;
+                        break;
+                    case 'أسئلة':
+                        prompt += `اكتب مجموعة متنوعة من الأسئلة والتمارين حول موضوع "${topic}". اكتب أسئلة متنوعة (اختيار متعدد، صح وخطأ، أسئلة مقالية). `;
+                        break;
+                    case 'ملخص':
+                        prompt += `اكتب ملخصاً شاملاً ومركزاً لموضوع "${topic}". يجب أن يغطي النقاط الرئيسية بشكل مختصر ومفيد. `;
+                        break;
+                    case 'امتحان':
+                        prompt += `اكتب امتحاناً تجريبياً شاملاً حول موضوع "${topic}". يجب أن يتضمن أسئلة متنوعة بدرجات صعوبة مختلفة. `;
+                        break;
+                    default:
+                        prompt += `اكتب محتوى تعليمي حول موضوع "${topic}". `;
+                }
+
+                prompt += `يجب أن يكون المحتوى:
+- باللغة العربية الفصحى
+- مناسب لطلاب الثانوية العامة
+- منظم ومنسق بشكل جيد
+- يحتوي على أمثلة عملية عند الحاجة
+- سهل الفهم والاستيعاب
+`;
+            } else {
+                prompt = `You are an expert teacher in ${subject || 'education'}. `;
+                
+                switch(contentType) {
+                    case 'Explanation':
+                        prompt += `Explain the topic "${topic}" in detail and clearly. Start with an introduction to the topic, then explain the basic concepts step by step with illustrative examples. Do not write questions, focus only on educational explanation. `;
+                        break;
+                    case 'Questions':
+                        prompt += `Write a variety of questions and exercises about the topic "${topic}". Write diverse questions (multiple choice, true/false, essay questions). `;
+                        break;
+                    case 'Summary':
+                        prompt += `Write a comprehensive and focused summary of the topic "${topic}". It should cover the main points in a concise and useful way. `;
+                        break;
+                    case 'Exam':
+                        prompt += `Write a comprehensive practice exam about the topic "${topic}". It should include diverse questions of different difficulty levels. `;
+                        break;
+                    default:
+                        prompt += `Write educational content about the topic "${topic}". `;
+                }
+
+                prompt += `The content should be:
+- In clear English
+- Suitable for high school students
+- Well-organized and formatted
+- Contains practical examples when needed
+- Easy to understand and comprehend
+`;
+            }
+
+            if (additionalDetails.trim()) {
+                if (isArabic) {
+                    prompt += `\nمتطلبات إضافية: ${additionalDetails}`;
+                } else {
+                    prompt += `\nAdditional requirements: ${additionalDetails}`;
+                }
+            }
+
+            if (isArabic) {
+                prompt += `\nيرجى تنسيق المحتوى باستخدام HTML بسيط مع العناوين والفقرات المناسبة. لا تستخدم كتل الكود مثل \`\`\`html، اكتب HTML مباشرة بدون علامات الكود.`;
+            } else {
+                prompt += `\nPlease format the content using simple HTML with appropriate headings and paragraphs. Do not use code blocks like \`\`\`html, write HTML directly without code markers.`;
+            }
+
+            return prompt;
+        }
+
+        function insertGeneratedContent(content) {
+            const editor = document.getElementById('documentEditor');
+            
+            // Create a new element for the generated content
+            const contentElement = document.createElement('div');
+            contentElement.className = 'editable-element text-container';
+            contentElement.contentEditable = true;
+            
+            // Apply correct direction and alignment based on current language
+            const isArabic = currentLanguage === 'ar';
+            contentElement.style.direction = isArabic ? 'rtl' : 'ltr';
+            contentElement.style.textAlign = isArabic ? 'right' : 'left';
+            
+            contentElement.innerHTML = content;
+            contentElement.onclick = () => selectElement(contentElement);
+            
+            // Add controls with proper language
+            const moveUpTitle = isArabic ? 'تحريك لأعلى' : 'Move Up';
+            const moveDownTitle = isArabic ? 'تحريك لأسفل' : 'Move Down';
+            const deleteTitle = isArabic ? 'حذف' : 'Delete';
+            
+            contentElement.innerHTML += `
+                <div class="element-controls">
+                    <button class="control-btn" onclick="moveElementUp(this.parentElement)" title="${moveUpTitle}">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button class="control-btn" onclick="moveElementDown(this.parentElement)" title="${moveDownTitle}">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button class="control-btn" onclick="deleteElement(this.parentElement)" title="${deleteTitle}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            editor.appendChild(contentElement);
+            selectElement(contentElement);
+        }
+
+        // Document Management
+        function saveDocument() {
+            if (!currentUser) {
+                showAlert('يجب تسجيل الدخول أولاً', 'error');
+                return;
+            }
+
+            const editor = document.getElementById('documentEditor');
+            const documentContent = editor.innerHTML;
+            const title = editor.querySelector('h1, h2, h3')?.textContent || 'مستند بدون عنوان';
+
+            const document = {
+                id: Date.now().toString(),
+                title: title,
+                content: documentContent,
+                userId: currentUser.id,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            documents.push(document);
+            localStorage.setItem('documents', JSON.stringify(documents));
+            showAlert('تم حفظ المستند بنجاح', 'success');
+        }
+
+        function loadDocuments() {
+            const savedDocuments = localStorage.getItem('documents');
+            if (savedDocuments) {
+                documents = JSON.parse(savedDocuments);
+            }
+        }
+
+        function clearDocument() {
+            if (confirm('هل أنت متأكد من مسح جميع المحتوى؟')) {
+                const editor = document.getElementById('documentEditor');
+                editor.innerHTML = `
+                    <div class="editable-element" contenteditable="true">
+                        <h2>عنوان المستند</h2>
+                    </div>
+                    <div class="editable-element" contenteditable="true">
+                        <p>ابدأ في كتابة المحتوى هنا أو استخدم مولد المحتوى بالذكاء الاصطناعي...</p>
+                    </div>
+                `;
+                selectedElement = null;
+                showAlert('تم مسح المحتوى', 'info');
+            }
+        }
+
+        function exportDocument() {
+            const editor = document.getElementById('documentEditor');
+            const content = editor.innerHTML;
+            
+            // Get current language from body attribute
+            const isArabic = document.body.getAttribute('data-lang') === 'ar';
+            const lang = isArabic ? 'ar' : 'en';
+            const dir = isArabic ? 'rtl' : 'ltr';
+            const fontFamily = isArabic ? "'Noto Sans Arabic', sans-serif" : "'Arial', sans-serif";
+            const title = isArabic ? 'مستند للطباعة' : 'Document for Print';
+            
+            // Create a printable version with correct direction
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="${lang}" dir="${dir}">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${title}</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+                    <style>
+                        body { 
+                            font-family: ${fontFamily}; 
+                            direction: ${dir}; 
+                            text-align: ${isArabic ? 'right' : 'left'};
+                            padding: 40px;
+                            line-height: 1.6;
+                        }
+                        .editable-element { 
+                            margin: 20px 0; 
+                            border: none !important;
+                            background: transparent !important;
+                            direction: ${dir};
+                            text-align: ${isArabic ? 'right' : 'left'};
+                        }
+                        .text-container {
+                            direction: ${dir};
+                            text-align: ${isArabic ? 'right' : 'left'};
+                        }
+                        .element-controls { display: none !important; }
+                        img { max-width: 100%; height: auto; }
+                        @media print {
+                            body { padding: 20px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${content}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Utility Functions
+        function showAlert(message, type = 'info') {
+            // Remove existing alerts
+            document.querySelectorAll('.alert').forEach(alert => alert.remove());
+
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <i class="fas fa-${getAlertIcon(type)}"></i>
+                ${message}
+            `;
+
+            // Insert at the top of the main content
+            const mainContent = document.querySelector('.main-content');
+            mainContent.insertBefore(alert, mainContent.firstChild);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        function getAlertIcon(type) {
+            switch(type) {
+                case 'success': return 'check-circle';
+                case 'error': return 'exclamation-circle';
+                case 'warning': return 'exclamation-triangle';
+                default: return 'info-circle';
+            }
+        }
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 's':
+                        e.preventDefault();
+                        saveDocument();
+                        break;
+                    case 'b':
+                        e.preventDefault();
+                        formatText('bold');
+                        break;
+                    case 'i':
+                        e.preventDefault();
+                        formatText('italic');
+                        break;
+                    case 'u':
+                        e.preventDefault();
+                        formatText('underline');
+                        break;
+                }
+            }
+        });
+
+        // Background handling
+        function handleBackgroundUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    changeDocumentBackground(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function changeDocumentBackground(imageSrc) {
+            const editor = document.getElementById('documentEditor');
+            editor.style.backgroundImage = `url(${imageSrc})`;
+            editor.classList.add('has-background');
+            showAlert('تم تغيير خلفية الملزمة بنجاح', 'success');
+        }
+
+        function removeBackground() {
+            const editor = document.getElementById('documentEditor');
+            editor.style.backgroundImage = '';
+            editor.classList.remove('has-background');
+            showAlert('تم إزالة خلفية الملزمة', 'info');
+        }
+
+        // Container functions
+        let selectedContainerColor = '#3b82f6';
+        let selectedContainerOpacity = 30;
+        let selectedContainerBorder = 'none';
+
+        function addContainer() {
+            const editor = document.getElementById('documentEditor');
+            const containerElement = document.createElement('div');
+            containerElement.className = 'editable-element container-element';
+            containerElement.contentEditable = true;
+            containerElement.draggable = true;
+            containerElement.innerHTML = 'اكتب النص هنا...';
+            
+            // Apply current container settings
+            applyContainerStyle(containerElement);
+            
+            containerElement.onclick = () => selectElement(containerElement);
+            
+            // Add controls
+            const controlsHtml = `
+                <div class="element-controls">
+                    <button class="control-btn" onclick="moveElementUp(this.parentElement.parentElement)" title="تحريك لأعلى">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button class="control-btn" onclick="moveElementDown(this.parentElement.parentElement)" title="تحريك لأسفل">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button class="control-btn" onclick="deleteElement(this.parentElement.parentElement)" title="حذف">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            
+            containerElement.insertAdjacentHTML('beforeend', controlsHtml);
+            
+            editor.appendChild(containerElement);
+            selectElement(containerElement);
+            showAlert('تم إضافة حاوية جديدة', 'success');
+        }
+
+        function setContainerColor(color) {
+            selectedContainerColor = color;
+            updateSelectedColorOption(color);
+            
+            // Apply to selected container if exists
+            if (selectedElement && selectedElement.classList.contains('container-element')) {
+                applyContainerStyle(selectedElement);
+            }
+        }
+
+        function updateSelectedColorOption(color) {
+            // Remove previous selection
+            document.querySelectorAll('.color-option.selected').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Find and select the matching color option
+            const colorOptions = document.querySelectorAll('.color-option');
+            colorOptions.forEach(option => {
+                const bgColor = window.getComputedStyle(option).backgroundColor;
+                const rgbToHex = (rgb) => {
+                    const result = rgb.match(/\d+/g);
+                    return result ? "#" + ((1 << 24) + (parseInt(result[0]) << 16) + (parseInt(result[1]) << 8) + parseInt(result[2])).toString(16).slice(1) : color;
+                };
+                
+                if (rgbToHex(bgColor).toLowerCase() === color.toLowerCase()) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Update custom color input
+            document.getElementById('customContainerColor').value = color;
+        }
+
+        function updateContainerOpacity(value) {
+            selectedContainerOpacity = value;
+            document.getElementById('opacityValue').textContent = value + '%';
+            
+            // Apply to selected container if exists
+            if (selectedElement && selectedElement.classList.contains('container-element')) {
+                applyContainerStyle(selectedElement);
+            }
+        }
+
+        function updateContainerBorder(borderStyle) {
+            selectedContainerBorder = borderStyle;
+            
+            // Apply to selected container if exists
+            if (selectedElement && selectedElement.classList.contains('container-element')) {
+                applyContainerStyle(selectedElement);
+            }
+        }
+
+        function applyContainerStyle(containerElement) {
+            const rgba = hexToRgba(selectedContainerColor, selectedContainerOpacity / 100);
+            containerElement.style.backgroundColor = rgba;
+            containerElement.style.borderColor = selectedContainerColor;
+            
+            if (selectedContainerBorder === 'none') {
+                containerElement.style.border = 'none';
+            } else {
+                containerElement.style.border = `2px ${selectedContainerBorder} ${selectedContainerColor}`;
+            }
+        }
+
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        // Enhanced image upload for better positioning
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    addImageToEditor(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addImageToEditor(imageSrc) {
+            const editor = document.getElementById('documentEditor');
+            const imageElement = document.createElement('div');
+            imageElement.className = 'editable-element image-container';
+            imageElement.draggable = true;
+            imageElement.style.position = 'relative';
+            
+            const img = document.createElement('img');
+            img.src = imageSrc;
+            img.className = 'image-element';
+            img.alt = 'صورة مرفقة';
+            img.style.width = '300px'; // Default width
+            img.style.height = 'auto';
+            
+            // Store original dimensions
+            img.onload = function() {
+                imageElement.dataset.originalWidth = this.naturalWidth;
+                imageElement.dataset.originalHeight = this.naturalHeight;
+                imageElement.dataset.currentWidth = 300;
+                updateSizeDisplay(imageElement);
+            };
+            
+            imageElement.appendChild(img);
+            imageElement.onclick = () => selectElement(imageElement);
+            
+            // Add controls
+            const controlsHtml = `
+                <div class="element-controls">
+                    <button class="control-btn" onclick="moveElementUp(this.parentElement.parentElement)" title="تحريك لأعلى">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button class="control-btn" onclick="moveElementDown(this.parentElement.parentElement)" title="تحريك لأسفل">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button class="control-btn" onclick="deleteElement(this.parentElement.parentElement)" title="حذف">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="image-resize-controls">
+                    <button class="resize-btn" onclick="resizeImage(this.parentElement.parentElement, 'smaller')" title="تصغير">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <div class="size-display">300px</div>
+                    <button class="resize-btn" onclick="resizeImage(this.parentElement.parentElement, 'larger')" title="تكبير">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button class="resize-btn" onclick="resetImageSize(this.parentElement.parentElement)" title="الحجم الأصلي">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </button>
+                </div>
+                <div class="image-movement-controls">
+                    <div class="movement-grid">
+                        <button class="movement-btn" onclick="moveImage(this.parentElement.parentElement.parentElement, 'left')" title="يسار">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button class="movement-btn" onclick="moveImage(this.parentElement.parentElement.parentElement, 'up')" title="أعلى">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button class="movement-btn" onclick="moveImage(this.parentElement.parentElement.parentElement, 'right')" title="يمين">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="movement-btn" onclick="moveImage(this.parentElement.parentElement.parentElement, 'down')" title="أسفل">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            imageElement.insertAdjacentHTML('beforeend', controlsHtml);
+            
+            editor.appendChild(imageElement);
+            selectElement(imageElement);
+            showAlert('تم إضافة الصورة بنجاح', 'success');
+        }
+
+        function resizeImage(imageContainer, direction) {
+            const img = imageContainer.querySelector('.image-element');
+            const currentWidth = parseInt(imageContainer.dataset.currentWidth) || 300;
+            const step = 50; // Resize step in pixels
+            let newWidth;
+            
+            if (direction === 'larger') {
+                newWidth = Math.min(currentWidth + step, 800); // Max width 800px
+            } else if (direction === 'smaller') {
+                newWidth = Math.max(currentWidth - step, 100); // Min width 100px
+            }
+            
+            img.style.width = newWidth + 'px';
+            img.style.height = 'auto';
+            imageContainer.dataset.currentWidth = newWidth;
+            
+            updateSizeDisplay(imageContainer);
+        }
+
+        function resetImageSize(imageContainer) {
+            const img = imageContainer.querySelector('.image-element');
+            const originalWidth = parseInt(imageContainer.dataset.originalWidth) || 300;
+            const maxDisplayWidth = Math.min(originalWidth, 600); // Limit display size
+            
+            img.style.width = maxDisplayWidth + 'px';
+            img.style.height = 'auto';
+            imageContainer.dataset.currentWidth = maxDisplayWidth;
+            
+            updateSizeDisplay(imageContainer);
+        }
+
+        function updateSizeDisplay(imageContainer) {
+            const sizeDisplay = imageContainer.querySelector('.size-display');
+            const currentWidth = imageContainer.dataset.currentWidth || '300';
+            if (sizeDisplay) {
+                sizeDisplay.textContent = currentWidth + 'px';
+            }
+            
+            // Update sidebar controls if this image is selected
+            if (imageContainer.classList.contains('selected')) {
+                updateSidebarImageControls(currentWidth);
+            }
+        }
+
+        // Sidebar image control functions
+        function resizeSelectedImage(direction) {
+            const selectedImage = document.querySelector('.image-container.selected');
+            if (selectedImage) {
+                resizeImage(selectedImage, direction);
+            }
+        }
+
+        function resizeSelectedImageBySlider(value) {
+            const selectedImage = document.querySelector('.image-container.selected');
+            if (selectedImage) {
+                const img = selectedImage.querySelector('.image-element');
+                img.style.width = value + 'px';
+                img.style.height = 'auto';
+                selectedImage.dataset.currentWidth = value;
+                updateSizeDisplay(selectedImage);
+                updateSidebarImageControls(value);
+            }
+        }
+
+        function resetSelectedImageSize() {
+            const selectedImage = document.querySelector('.image-container.selected');
+            if (selectedImage) {
+                resetImageSize(selectedImage);
+            }
+        }
+
+        function updateSidebarImageControls(width) {
+            const slider = document.getElementById('imageSizeSlider');
+            const sizeDisplay = document.getElementById('currentImageSize');
+            
+            if (slider) slider.value = width;
+            if (sizeDisplay) sizeDisplay.textContent = width + 'px';
+        }
+
+        function showImageControls() {
+            const imageControls = document.getElementById('imageControls');
+            if (imageControls) {
+                imageControls.style.display = 'block';
+            }
+        }
+
+        function hideImageControls() {
+            const imageControls = document.getElementById('imageControls');
+            if (imageControls) {
+                imageControls.style.display = 'none';
+            }
+        }
+
+        // Image movement functions
+        function moveImage(imageContainer, direction) {
+            const moveStep = 10; // pixels to move each time
+            let currentTop = parseInt(imageContainer.style.top) || 0;
+            let currentLeft = parseInt(imageContainer.style.left) || 0;
+            
+            // Ensure the container has position relative for movement
+            if (imageContainer.style.position !== 'relative') {
+                imageContainer.style.position = 'relative';
+            }
+            
+            switch(direction) {
+                case 'up':
+                    imageContainer.style.top = (currentTop - moveStep) + 'px';
+                    break;
+                case 'down':
+                    imageContainer.style.top = (currentTop + moveStep) + 'px';
+                    break;
+                case 'left':
+                    imageContainer.style.left = (currentLeft - moveStep) + 'px';
+                    break;
+                case 'right':
+                    imageContainer.style.left = (currentLeft + moveStep) + 'px';
+                    break;
+            }
+            
+            // Store position data
+            imageContainer.dataset.positionTop = imageContainer.style.top;
+            imageContainer.dataset.positionLeft = imageContainer.style.left;
+        }
+
+        function resetImagePosition(imageContainer) {
+            imageContainer.style.position = 'static';
+            imageContainer.style.top = 'auto';
+            imageContainer.style.left = 'auto';
+            imageContainer.dataset.positionTop = '0px';
+            imageContainer.dataset.positionLeft = '0px';
+        }
+
+        // Sidebar movement control functions
+        function moveSelectedImage(direction) {
+            const selectedImage = document.querySelector('.image-container.selected');
+            if (selectedImage) {
+                moveImage(selectedImage, direction);
+            }
+        }
+
+        function resetSelectedImagePosition() {
+            const selectedImage = document.querySelector('.image-container.selected');
+            if (selectedImage) {
+                resetImagePosition(selectedImage);
+            }
+        }
+
+        // Auto-save functionality
+        let autoSaveTimeout;
+        document.getElementById('documentEditor').addEventListener('input', function() {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+                if (currentUser) {
+                    // Auto-save logic can be implemented here
+                    console.log('Auto-saving...');
+                }
+            }, 5000);
+        });
+
+        // Language Support
+        let currentLanguage = 'ar'; // default Arabic
+
+        const translations = {
+            ar: {
+                // Header
+                login: 'تسجيل الدخول',
+                register: 'إنشاء حساب',
+                logout: 'تسجيل الخروج',
+                welcome: 'مرحباً',
+                
+                // Welcome Section
+                welcomeTitle: 'مرحباً بك في منصة سؤال',
+                welcomeSubtitle: 'منصة تعليمية متطورة للمعلمين لإنشاء المواد التعليمية بالذكاء الاصطناعي',
+                startNow: 'ابدأ الآن',
+                
+                // Dashboard
+                workspace: 'مساحة العمل - إنشاء المواد التعليمية',
+                workspaceDesc: 'استخدم الذكاء الاصطناعي لإنشاء محتوى تعليمي متميز',
+                
+                // AI Panel
+                aiGenerator: 'مولد المحتوى بالذكاء الاصطناعي',
+                lessonTopic: 'موضوع الدرس',
+                subject: 'المادة الدراسية',
+                selectSubject: 'اختر المادة',
+                contentType: 'نوع المحتوى',
+                selectContentType: 'اختر نوع المحتوى',
+                additionalDetails: 'تفاصيل إضافية',
+                generateContent: 'إنشاء المحتوى',
+                
+                // Formatting
+                textFormatting: 'تنسيق النص',
+                fontSize: 'حجم الخط',
+                textColor: 'لون النص',
+                
+                // Image and Background
+                addImage: 'إضافة صورة',
+                chooseImage: 'اختر صورة',
+                documentBackground: 'خلفية الملزمة',
+                changeBackground: 'تغيير الخلفية',
+                removeBackground: 'إزالة الخلفية',
+                
+                // Containers
+                containerTools: 'أدوات الحاويات',
+                addContainer: 'إضافة حاوية',
+                containerColor: 'لون الحاوية',
+                containerOpacity: 'شفافية الحاوية',
+                borderStyle: 'نمط الحدود',
+                
+                // Document Actions
+                documentActions: 'إجراءات المستند',
+                saveDocument: 'حفظ المستند',
+                exportPDF: 'تصدير PDF',
+                clearContent: 'مسح المحتوى',
+                
+                // Subjects
+                math: 'رياضيات',
+                physics: 'فيزياء',
+                chemistry: 'كيمياء',
+                biology: 'أحياء',
+                arabic: 'لغة عربية',
+                english: 'لغة إنجليزية',
+                history: 'تاريخ',
+                geography: 'جغرافيا',
+                
+                // Content Types
+                explanation: 'شرح',
+                questions: 'أسئلة',
+                summary: 'ملخص',
+                exam: 'امتحان',
+                
+                // Border styles
+                noBorder: 'بدون حدود',
+                solidBorder: 'خط صلب',
+                dashedBorder: 'خط متقطع',
+                dottedBorder: 'نقاط',
+                
+                // Loading and messages
+                generating: 'جاري الإنشاء...',
+                autoSaving: 'حفظ تلقائي...',
+                imageAdded: 'تم إضافة الصورة بنجاح',
+                backgroundChanged: 'تم تغيير خلفية الملزمة بنجاح',
+                backgroundRemoved: 'تم إزالة خلفية الملزمة',
+                containerAdded: 'تم إضافة حاوية جديدة',
+                documentSaved: 'تم حفظ المستند بنجاح',
+                contentCleared: 'تم مسح المحتوى',
+                
+                // Toolbar
+                bold: 'غامق',
+                italic: 'مائل',
+                underline: 'تحته خط',
+                alignRight: 'محاذاة يمين',
+                alignCenter: 'محاذاة وسط',
+                alignLeft: 'محاذاة يسار',
+                addText: 'إضافة نص',
+                
+                // Auth Forms
+                loginTitle: 'تسجيل الدخول',
+                registerTitle: 'إنشاء حساب جديد',
+                fullName: 'الاسم الكامل',
+                email: 'البريد الإلكتروني',
+                password: 'كلمة المرور',
+                confirmPassword: 'تأكيد كلمة المرور',
+                loginBtn: 'دخول',
+                registerBtn: 'إنشاء حساب',
+                noAccount: 'ليس لديك حساب؟',
+                hasAccount: 'لديك حساب بالفعل؟',
+                createNewAccount: 'إنشاء حساب جديد'
+            },
+            en: {
+                // Header
+                login: 'Login',
+                register: 'Sign Up',
+                logout: 'Logout',
+                welcome: 'Welcome',
+                
+                // Welcome Section
+                welcomeTitle: 'Welcome to Question Platform',
+                welcomeSubtitle: 'Advanced educational platform for teachers to create AI-powered learning materials',
+                startNow: 'Get Started',
+                
+                // Dashboard
+                workspace: 'Workspace - Create Educational Materials',
+                workspaceDesc: 'Use artificial intelligence to create outstanding educational content',
+                
+                // AI Panel
+                aiGenerator: 'AI Content Generator',
+                lessonTopic: 'Lesson Topic',
+                subject: 'Subject',
+                selectSubject: 'Select Subject',
+                contentType: 'Content Type',
+                selectContentType: 'Select Content Type',
+                additionalDetails: 'Additional Details',
+                generateContent: 'Generate Content',
+                
+                // Formatting
+                textFormatting: 'Text Formatting',
+                fontSize: 'Font Size',
+                textColor: 'Text Color',
+                
+                // Image and Background
+                addImage: 'Add Image',
+                chooseImage: 'Choose Image',
+                documentBackground: 'Document Background',
+                changeBackground: 'Change Background',
+                removeBackground: 'Remove Background',
+                
+                // Containers
+                containerTools: 'Container Tools',
+                addContainer: 'Add Container',
+                containerColor: 'Container Color',
+                containerOpacity: 'Container Opacity',
+                borderStyle: 'Border Style',
+                
+                // Document Actions
+                documentActions: 'Document Actions',
+                saveDocument: 'Save Document',
+                exportPDF: 'Export PDF',
+                clearContent: 'Clear Content',
+                
+                // Subjects
+                math: 'Mathematics',
+                physics: 'Physics',
+                chemistry: 'Chemistry',
+                biology: 'Biology',
+                arabic: 'Arabic Language',
+                english: 'English Language',
+                history: 'History',
+                geography: 'Geography',
+                
+                // Content Types
+                explanation: 'Explanation',
+                questions: 'Questions',
+                summary: 'Summary',
+                exam: 'Exam',
+                
+                // Border styles
+                noBorder: 'No Border',
+                solidBorder: 'Solid Line',
+                dashedBorder: 'Dashed Line',
+                dottedBorder: 'Dotted Line',
+                
+                // Loading and messages
+                generating: 'Generating...',
+                autoSaving: 'Auto-saving...',
+                imageAdded: 'Image added successfully',
+                backgroundChanged: 'Document background changed successfully',
+                backgroundRemoved: 'Document background removed',
+                containerAdded: 'New container added successfully',
+                documentSaved: 'Document saved successfully',
+                contentCleared: 'Content cleared',
+                
+                // Toolbar
+                bold: 'Bold',
+                italic: 'Italic',
+                underline: 'Underline',
+                alignRight: 'Align Right',
+                alignCenter: 'Align Center',
+                alignLeft: 'Align Left',
+                addText: 'Add Text',
+                
+                // Auth Forms
+                loginTitle: 'Login',
+                registerTitle: 'Create New Account',
+                fullName: 'Full Name',
+                email: 'Email',
+                password: 'Password',
+                confirmPassword: 'Confirm Password',
+                loginBtn: 'Login',
+                registerBtn: 'Sign Up',
+                noAccount: "Don't have an account?",
+                hasAccount: 'Already have an account?',
+                createNewAccount: 'Create new account'
+            }
+        };
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            updateLanguage();
+            
+            // Save language preference
+            localStorage.setItem('preferredLanguage', currentLanguage);
+        }
+
+        function updateLanguage() {
+            const lang = translations[currentLanguage];
+            const isArabic = currentLanguage === 'ar';
+            
+            // Update HTML attributes
+            document.documentElement.lang = currentLanguage;
+            document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
+            document.body.style.fontFamily = isArabic ? "'Noto Sans Arabic', sans-serif" : "'Inter', sans-serif";
+            document.body.style.direction = isArabic ? 'rtl' : 'ltr';
+            
+            // Update container direction
+            const container = document.querySelector('.container');
+            if (container) {
+                container.style.direction = isArabic ? 'rtl' : 'ltr';
+            }
+            
+            // Update all main content sections
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.style.direction = isArabic ? 'rtl' : 'ltr';
+            }
+            
+            // Update dashboard content
+            const dashboardContent = document.querySelector('.dashboard-content');
+            if (dashboardContent) {
+                dashboardContent.style.direction = isArabic ? 'rtl' : 'ltr';
+            }
+            
+            // Update editor container
+            const editorContainer = document.querySelector('.editor-container');
+            if (editorContainer) {
+                editorContainer.style.direction = isArabic ? 'rtl' : 'ltr';
+            }
+            
+            // Update document editor direction
+            const documentEditor = document.querySelector('#documentEditor');
+            if (documentEditor) {
+                documentEditor.style.direction = isArabic ? 'rtl' : 'ltr';
+                documentEditor.style.textAlign = isArabic ? 'right' : 'left';
+            }
+            
+            // Update all text containers in document
+            const textContainers = document.querySelectorAll('.text-container');
+            textContainers.forEach(container => {
+                container.style.direction = isArabic ? 'rtl' : 'ltr';
+                container.style.textAlign = isArabic ? 'right' : 'left';
+            });
+            
+            // Update sidebar
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                sidebar.style.direction = isArabic ? 'rtl' : 'ltr';
+            }
+            
+            // Update input fields direction
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.style.direction = isArabic ? 'rtl' : 'ltr';
+                input.style.textAlign = isArabic ? 'right' : 'left';
+            });
+            
+            // Update language toggle buttons
+            const toggleButtons = document.querySelectorAll('#languageToggle, #languageToggleUser');
+            toggleButtons.forEach(btn => {
+                btn.innerHTML = `<i class="fas fa-globe"></i> ${isArabic ? 'English' : 'العربية'}`;
+            });
+            
+            // Update logo
+            document.querySelector('.logo').textContent = isArabic ? 'سؤال' : 'Question';
+            
+            // Update navigation
+            updateElementText('.text-login', lang.login);
+            updateElementText('.text-register', lang.register);
+            updateElementText('.text-logout', lang.logout);
+            updateElementText('.text-start-now', lang.startNow);
+            
+            // Update welcome section
+            updateElementText('.text-welcome-title', lang.welcomeTitle);
+            updateElementText('.text-welcome-subtitle', lang.welcomeSubtitle);
+            
+            // Update dashboard
+            updateElementText('.text-workspace', lang.workspace);
+            updateElementText('.text-workspace-desc', lang.workspaceDesc);
+            
+            // Update sections - will be implemented after adding data attributes
+            updateSectionTexts(lang);
+            
+            // Update text alignment for English
+            if (!isArabic) {
+                document.querySelectorAll('.welcome-section, .dashboard-header, .auth-form').forEach(element => {
+                    element.style.textAlign = 'left';
+                });
+                
+                // Update form text alignment
+                document.querySelectorAll('.form-group').forEach(element => {
+                    element.style.textAlign = 'left';
+                });
+            } else {
+                document.querySelectorAll('.welcome-section, .dashboard-header, .auth-form').forEach(element => {
+                    element.style.textAlign = 'center';
+                });
+                
+                // Reset form text alignment for Arabic
+                document.querySelectorAll('.form-group').forEach(element => {
+                    element.style.textAlign = 'right';
+                });
+            }
+        }
+
+        function updateElementText(selector, text) {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.textContent = text;
+            }
+        }
+
+        function updateSectionTexts(lang) {
+            // Update all sections with comprehensive translation
+            
+            // Update placeholders
+            const lessonTopicInput = document.getElementById('lessonTopic');
+            if (lessonTopicInput) {
+                lessonTopicInput.placeholder = currentLanguage === 'ar' ? 'مثال: الهندسة التحليلية' : 'Example: Analytical Geometry';
+            }
+            
+            const additionalDetailsTextarea = document.getElementById('additionalDetails');
+            if (additionalDetailsTextarea) {
+                additionalDetailsTextarea.placeholder = currentLanguage === 'ar' ? 'أضف أي تفاصيل أو متطلبات خاصة...' : 'Add any special details or requirements...';
+            }
+            
+            // Update select options
+            updateSelectOptions(lang);
+            
+            // Update all section titles and labels
+            updateAllTexts(lang);
+            
+            // Update form texts
+            updateFormTexts(lang);
+            updatePlaceholders(lang);
+            updateAllInterfaceTexts(lang);
+        }
+
+        function updateAllInterfaceTexts(lang) {
+            // Update all section titles
+            updateSectionTitles(lang);
+            
+            // Update all labels
+            updateLabels(lang);
+            
+            // Update all buttons
+            updateButtons(lang);
+            
+            // Update all select options
+            updateSelectOptions(lang);
+            
+            // Update all form elements
+            updateFormTexts(lang);
+            
+            // Update placeholders
+            updatePlaceholders(lang);
+            
+            // Update toolbar buttons
+            updateFormattingButtons(lang);
+        }
+
+        function updateAllTexts(lang) {
+            // Update sidebar sections systematically
+            const sidebarSections = document.querySelectorAll('.sidebar-section');
+            
+            sidebarSections.forEach(section => {
+                const title = section.querySelector('.sidebar-title');
+                const icon = title ? title.querySelector('i') : null;
+                const iconClass = icon ? icon.className : '';
+                
+                if (iconClass.includes('fa-robot')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.aiGenerator}`;
+                } else if (iconClass.includes('fa-text-height')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.textFormatting}`;
+                } else if (iconClass.includes('fa-image')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.addImage}`;
+                } else if (iconClass.includes('fa-palette')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.documentBackground}`;
+                } else if (iconClass.includes('fa-square')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.containerTools}`;
+                } else if (iconClass.includes('fa-file-alt')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.documentActions}`;
+                }
+            });
+            
+            // Update all labels
+            updateLabels(lang);
+            
+            // Update all buttons
+            updateButtons(lang);
+        }
+
+        function updateLabels(lang) {
+            const labels = document.querySelectorAll('.control-label');
+            labels.forEach(label => {
+                const text = label.textContent.trim();
+                
+                // AI Panel labels
+                if (text.includes('موضوع الدرس') || text.includes('Lesson Topic')) {
+                    label.textContent = lang.lessonTopic;
+                } else if (text.includes('المادة الدراسية') || text.includes('Subject')) {
+                    label.textContent = lang.subject;
+                } else if (text.includes('نوع المحتوى') || text.includes('Content Type')) {
+                    label.textContent = lang.contentType;
+                } else if (text.includes('تفاصيل إضافية') || text.includes('Additional Details')) {
+                    label.textContent = lang.additionalDetails;
+                }
+                
+                // Formatting labels
+                else if (text.includes('حجم الخط') || text.includes('Font Size')) {
+                    label.textContent = lang.fontSize;
+                } else if (text.includes('لون النص') || text.includes('Text Color')) {
+                    label.textContent = lang.textColor;
+                }
+                
+                // Container labels
+                else if (text.includes('لون الحاوية') || text.includes('Container Color')) {
+                    label.textContent = lang.containerColor;
+                } else if (text.includes('شفافية الحاوية') || text.includes('Container Opacity')) {
+                    const opacityValue = document.getElementById('opacityValue');
+                    label.textContent = lang.containerOpacity + ': ' + (opacityValue ? opacityValue.textContent : '30%');
+                } else if (text.includes('نمط الحدود') || text.includes('Border Style')) {
+                    label.textContent = lang.borderStyle;
+                }
+                
+                // Image controls
+                else if (text.includes('حجم الصورة المحددة') || text.includes('Selected Image Size')) {
+                    label.textContent = currentLanguage === 'ar' ? 'حجم الصورة المحددة' : 'Selected Image Size';
+                } else if (text.includes('تحريك الصورة') || text.includes('Move Image')) {
+                    label.textContent = currentLanguage === 'ar' ? 'تحريك الصورة' : 'Move Image';
+                }
+            });
+        }
+
+        function updateButtons(lang) {
+            // Update generate button
+            const generateBtn = document.getElementById('generateBtn');
+            if (generateBtn) {
+                generateBtn.innerHTML = `<i class="fas fa-magic"></i> ${lang.generateContent}`;
+            }
+            
+            // Update specific buttons by checking their content
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                const text = button.textContent.trim();
+                
+                // Image buttons
+                if (text.includes('اختر صورة') || text.includes('Choose Image')) {
+                    button.innerHTML = `<i class="fas fa-upload"></i> ${lang.chooseImage}`;
+                } else if (text.includes('تغيير الخلفية') || text.includes('Change Background')) {
+                    button.innerHTML = `<i class="fas fa-image"></i> ${lang.changeBackground}`;
+                } else if (text.includes('إزالة الخلفية') || text.includes('Remove Background')) {
+                    button.innerHTML = `<i class="fas fa-times"></i> ${lang.removeBackground}`;
+                } else if (text.includes('إضافة حاوية') || text.includes('Add Container')) {
+                    button.innerHTML = `<i class="fas fa-plus"></i> ${lang.addContainer}`;
+                }
+                
+                // Document buttons
+                else if (text.includes('حفظ المستند') || text.includes('Save Document')) {
+                    button.innerHTML = `<i class="fas fa-save"></i> ${lang.saveDocument}`;
+                } else if (text.includes('تصدير PDF') || text.includes('Export PDF')) {
+                    button.innerHTML = `<i class="fas fa-download"></i> ${lang.exportPDF}`;
+                } else if (text.includes('مسح المحتوى') || text.includes('Clear Content')) {
+                    button.innerHTML = `<i class="fas fa-trash"></i> ${lang.clearContent}`;
+                }
+                
+                // Size buttons
+                else if (text.includes('الحجم الأصلي') || text.includes('Original Size')) {
+                    button.innerHTML = `<i class="fas fa-expand-arrows-alt"></i> ${currentLanguage === 'ar' ? 'الحجم الأصلي' : 'Original Size'}`;
+                }
+            });
+            
+            // Update toolbar buttons
+            updateToolbarButtons();
+        }
+
+        function updateToolbarButtons() {
+            const toolbarButtons = document.querySelectorAll('.toolbar-btn');
+            toolbarButtons.forEach(btn => {
+                const icon = btn.querySelector('i');
+                const iconClass = icon ? icon.className : '';
+                
+                if (iconClass.includes('fa-plus')) {
+                    btn.innerHTML = `<i class="${iconClass}"></i> ${currentLanguage === 'ar' ? 'نص' : 'Text'}`;
+                }
+                
+                // Update titles
+                if (iconClass.includes('fa-bold')) {
+                    btn.title = currentLanguage === 'ar' ? 'غامق' : 'Bold';
+                } else if (iconClass.includes('fa-italic')) {
+                    btn.title = currentLanguage === 'ar' ? 'مائل' : 'Italic';
+                } else if (iconClass.includes('fa-underline')) {
+                    btn.title = currentLanguage === 'ar' ? 'تحته خط' : 'Underline';
+                } else if (iconClass.includes('fa-align-right')) {
+                    btn.title = currentLanguage === 'ar' ? 'محاذاة يمين' : 'Align Right';
+                } else if (iconClass.includes('fa-align-center')) {
+                    btn.title = currentLanguage === 'ar' ? 'محاذاة وسط' : 'Align Center';
+                } else if (iconClass.includes('fa-align-left')) {
+                    btn.title = currentLanguage === 'ar' ? 'محاذاة يسار' : 'Align Left';
+                } else if (iconClass.includes('fa-plus')) {
+                    btn.title = currentLanguage === 'ar' ? 'إضافة نص' : 'Add Text';
+                }
+            });
+        }
+
+        function updateSelectOptions(lang) {
+            // Subject options
+            const subjectSelect = document.getElementById('subject');
+            if (subjectSelect) {
+                const options = subjectSelect.querySelectorAll('option');
+                options.forEach(option => {
+                    if (currentLanguage === 'ar') {
+                        // Arabic text
+                        if (option.value === '') option.textContent = 'اختر المادة';
+                        else if (option.value === 'رياضيات' || option.value === 'Mathematics') {
+                            option.textContent = 'رياضيات';
+                            option.value = 'رياضيات';
+                        } else if (option.value === 'فيزياء' || option.value === 'Physics') {
+                            option.textContent = 'فيزياء';
+                            option.value = 'فيزياء';
+                        } else if (option.value === 'كيمياء' || option.value === 'Chemistry') {
+                            option.textContent = 'كيمياء';
+                            option.value = 'كيمياء';
+                        } else if (option.value === 'أحياء' || option.value === 'Biology') {
+                            option.textContent = 'أحياء';
+                            option.value = 'أحياء';
+                        } else if (option.value === 'عربي' || option.value === 'Arabic') {
+                            option.textContent = 'لغة عربية';
+                            option.value = 'عربي';
+                        } else if (option.value === 'انجليزي' || option.value === 'English') {
+                            option.textContent = 'لغة إنجليزية';
+                            option.value = 'انجليزي';
+                        } else if (option.value === 'تاريخ' || option.value === 'History') {
+                            option.textContent = 'تاريخ';
+                            option.value = 'تاريخ';
+                        } else if (option.value === 'جغرافيا' || option.value === 'Geography') {
+                            option.textContent = 'جغرافيا';
+                            option.value = 'جغرافيا';
+                        }
+                    } else {
+                        // English text
+                        if (option.value === '') option.textContent = 'Select Subject';
+                        else if (option.value === 'رياضيات' || option.value === 'Mathematics') {
+                            option.textContent = 'Mathematics';
+                            option.value = 'Mathematics';
+                        } else if (option.value === 'فيزياء' || option.value === 'Physics') {
+                            option.textContent = 'Physics';
+                            option.value = 'Physics';
+                        } else if (option.value === 'كيمياء' || option.value === 'Chemistry') {
+                            option.textContent = 'Chemistry';
+                            option.value = 'Chemistry';
+                        } else if (option.value === 'أحياء' || option.value === 'Biology') {
+                            option.textContent = 'Biology';
+                            option.value = 'Biology';
+                        } else if (option.value === 'عربي' || option.value === 'Arabic') {
+                            option.textContent = 'Arabic Language';
+                            option.value = 'Arabic';
+                        } else if (option.value === 'انجليزي' || option.value === 'English') {
+                            option.textContent = 'English Language';
+                            option.value = 'English';
+                        } else if (option.value === 'تاريخ' || option.value === 'History') {
+                            option.textContent = 'History';
+                            option.value = 'History';
+                        } else if (option.value === 'جغرافيا' || option.value === 'Geography') {
+                            option.textContent = 'Geography';
+                            option.value = 'Geography';
+                        }
+                    }
+                });
+            }
+            
+            // Content type options
+            const contentTypeSelect = document.getElementById('contentType');
+            if (contentTypeSelect) {
+                const options = contentTypeSelect.querySelectorAll('option');
+                options.forEach(option => {
+                    if (currentLanguage === 'ar') {
+                        // Show Arabic text and value
+                        if (option.value === 'شرح') {
+                            option.textContent = 'شرح الدرس';
+                        } else if (option.value === 'أسئلة') {
+                            option.textContent = 'أسئلة وتمارين';
+                        } else if (option.value === 'ملخص') {
+                            option.textContent = 'ملخص الدرس';
+                        } else if (option.value === 'امتحان') {
+                            option.textContent = 'امتحان تجريبي';
+                        }
+                    } else {
+                        // Show English text and update value
+                        if (option.value === 'شرح') {
+                            option.textContent = 'Lesson Explanation';
+                            option.value = 'Explanation';
+                        } else if (option.value === 'أسئلة') {
+                            option.textContent = 'Questions & Exercises';
+                            option.value = 'Questions';
+                        } else if (option.value === 'ملخص') {
+                            option.textContent = 'Lesson Summary';
+                            option.value = 'Summary';
+                        } else if (option.value === 'امتحان') {
+                            option.textContent = 'Practice Exam';
+                            option.value = 'Exam';
+                        }
+                        // Handle already converted values
+                        else if (option.value === 'Explanation') {
+                            option.textContent = 'Lesson Explanation';
+                        } else if (option.value === 'Questions') {
+                            option.textContent = 'Questions & Exercises';
+                        } else if (option.value === 'Summary') {
+                            option.textContent = 'Lesson Summary';
+                        } else if (option.value === 'Exam') {
+                            option.textContent = 'Practice Exam';
+                        }
+                    }
+                });
+            }
+            
+            // Border style options
+            const borderSelect = document.getElementById('containerBorder');
+            if (borderSelect) {
+                const options = borderSelect.querySelectorAll('option');
+                if (options.length > 0) {
+                    options[0].textContent = lang.noBorder;
+                    if (options[1]) options[1].textContent = lang.solidBorder;
+                    if (options[2]) options[2].textContent = lang.dashedBorder;
+                    if (options[3]) options[3].textContent = lang.dottedBorder;
+                }
+            }
+            
+            // Font size options
+            const fontSizeSelect = document.getElementById('fontSize');
+            if (fontSizeSelect) {
+                const options = fontSizeSelect.querySelectorAll('option');
+                if (currentLanguage === 'en') {
+                    if (options[0]) options[0].textContent = 'Small (12px)';
+                    if (options[1]) options[1].textContent = 'Normal (14px)';
+                    if (options[2]) options[2].textContent = 'Medium (16px)';
+                    if (options[3]) options[3].textContent = 'Large (18px)';
+                    if (options[4]) options[4].textContent = 'Extra Large (24px)';
+                    if (options[5]) options[5].textContent = 'Title (32px)';
+                } else {
+                    if (options[0]) options[0].textContent = 'صغير (12px)';
+                    if (options[1]) options[1].textContent = 'عادي (14px)';
+                    if (options[2]) options[2].textContent = 'متوسط (16px)';
+                    if (options[3]) options[3].textContent = 'كبير (18px)';
+                    if (options[4]) options[4].textContent = 'كبير جداً (24px)';
+                    if (options[5]) options[5].textContent = 'عنوان (32px)';
+                }
+            }
+        }
+
+        function updateSectionTitles(lang) {
+            // Get all sidebar titles and update them
+            const sidebarTitles = document.querySelectorAll('.sidebar-title');
+            
+            sidebarTitles.forEach((title, index) => {
+                const icon = title.querySelector('i');
+                const iconClass = icon ? icon.className : '';
+                
+                if (iconClass.includes('fa-robot')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.aiGenerator}`;
+                } else if (iconClass.includes('fa-text-height')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.textFormatting}`;
+                } else if (iconClass.includes('fa-image')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.addImage}`;
+                } else if (iconClass.includes('fa-palette')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.documentBackground}`;
+                } else if (iconClass.includes('fa-square')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.containerTools}`;
+                } else if (iconClass.includes('fa-file-alt')) {
+                    title.innerHTML = `<i class="${iconClass}"></i> ${lang.documentActions}`;
+                }
+            });
+            
+            // Update labels
+            const labels = document.querySelectorAll('.control-label');
+            labels.forEach(label => {
+                const text = label.textContent.trim();
+                if (text.includes('حجم الخط') || text.includes('Font Size')) {
+                    label.textContent = lang.fontSize;
+                } else if (text.includes('لون النص') || text.includes('Text Color')) {
+                    label.textContent = lang.textColor;
+                } else if (text.includes('لون الحاوية') || text.includes('Container Color')) {
+                    label.textContent = lang.containerColor;
+                } else if (text.includes('شفافية الحاوية') || text.includes('Container Opacity')) {
+                    label.textContent = lang.containerOpacity + ': ' + document.getElementById('opacityValue').textContent;
+                } else if (text.includes('نمط الحدود') || text.includes('Border Style')) {
+                    label.textContent = lang.borderStyle;
+                }
+            });
+            
+            // Update buttons
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('اختر صورة') || text.includes('Choose Image')) {
+                    button.innerHTML = `<i class="fas fa-upload"></i> ${lang.chooseImage}`;
+                } else if (text.includes('تغيير الخلفية') || text.includes('Change Background')) {
+                    button.innerHTML = `<i class="fas fa-image"></i> ${lang.changeBackground}`;
+                } else if (text.includes('إزالة الخلفية') || text.includes('Remove Background')) {
+                    button.innerHTML = `<i class="fas fa-times"></i> ${lang.removeBackground}`;
+                } else if (text.includes('إضافة حاوية') || text.includes('Add Container')) {
+                    button.innerHTML = `<i class="fas fa-plus"></i> ${lang.addContainer}`;
+                } else if (text.includes('حفظ المستند') || text.includes('Save Document')) {
+                    button.innerHTML = `<i class="fas fa-save"></i> ${lang.saveDocument}`;
+                } else if (text.includes('تصدير PDF') || text.includes('Export PDF')) {
+                    button.innerHTML = `<i class="fas fa-download"></i> ${lang.exportPDF}`;
+                } else if (text.includes('مسح المحتوى') || text.includes('Clear Content')) {
+                    button.innerHTML = `<i class="fas fa-trash"></i> ${lang.clearContent}`;
+                }
+            });
+        }
+
+        function updatePlaceholders(lang) {
+            // Update input placeholders
+            const lessonTopicInput = document.getElementById('lessonTopic');
+            if (lessonTopicInput) {
+                lessonTopicInput.placeholder = currentLanguage === 'ar' ? 'أدخل موضوع الدرس...' : 'Enter lesson topic...';
+            }
+            
+            const additionalDetailsTextarea = document.getElementById('additionalDetails');
+            if (additionalDetailsTextarea) {
+                additionalDetailsTextarea.placeholder = currentLanguage === 'ar' ? 'أضف أي تفاصيل أو متطلبات خاصة...' : 'Add any special details or requirements...';
+            }
+        }
+
+        function updateFormTexts(lang) {
+            // Update auth form titles
+            const loginTitle = document.querySelector('#loginModal .form-title');
+            if (loginTitle) loginTitle.textContent = lang.loginTitle;
+            
+            const registerTitle = document.querySelector('#registerModal .form-title');
+            if (registerTitle) registerTitle.textContent = lang.registerTitle;
+            
+            // Update form labels
+            const formLabels = document.querySelectorAll('.form-label');
+            formLabels.forEach(label => {
+                const text = label.textContent.trim();
+                if (text.includes('الاسم الكامل') || text.includes('Full Name')) {
+                    label.textContent = lang.fullName;
+                } else if (text.includes('البريد الإلكتروني') || text.includes('Email')) {
+                    label.textContent = lang.email;
+                } else if (text.includes('كلمة المرور') && !text.includes('تأكيد')) {
+                    label.textContent = lang.password;
+                } else if (text.includes('تأكيد كلمة المرور') || text.includes('Confirm Password')) {
+                    label.textContent = lang.confirmPassword;
+                }
+            });
+            
+            // Update form buttons
+            const loginBtn = document.querySelector('#loginModal button[type="submit"]');
+            if (loginBtn) {
+                loginBtn.innerHTML = `<i class="fas fa-sign-in-alt"></i> ${lang.loginBtn}`;
+            }
+            
+            const registerBtn = document.querySelector('#registerModal button[type="submit"]');
+            if (registerBtn) {
+                registerBtn.innerHTML = `<i class="fas fa-user-plus"></i> ${lang.registerBtn}`;
+            }
+        }
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved language preference
+            const savedLanguage = localStorage.getItem('preferredLanguage');
+            if (savedLanguage && savedLanguage !== currentLanguage) {
+                currentLanguage = savedLanguage;
+                updateLanguage();
+            }
+            
+            updateSelectedColorOption(selectedContainerColor);
+        });
+    </script>
+</body>
+</html>
